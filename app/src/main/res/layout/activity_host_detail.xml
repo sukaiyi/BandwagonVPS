@@ -1,50 +1,184 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/card_view"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_view"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:foreground="?attr/selectableItemBackground"
-    app:cardCornerRadius="4dp"
-    app:cardElevation="2dp"
-    app:cardMaxElevation="10dp"
-    app:cardUseCompatPadding="true"
-    app:cardPreventCornerOverlap="true"
-    tools:context="com.sukaiyi.bandwagonvps.HostDetailActivity">
+    android:layout_height="match_parent">
 
-    <android.support.constraint.ConstraintLayout
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/host_name"
-            android:layout_width="wrap_content"
+        <android.support.v7.widget.CardView
+            android:id="@+id/card_view"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="hostname"
-            android:layout_margin="15dp"
-            style="@android:style/TextAppearance.DeviceDefault.Medium"
-            android:textColor="@android:color/black"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent" />
-        <TextView
-            android:id="@+id/plan"
-            android:layout_width="wrap_content"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:text="wagon10g512m1t-ca"
-            android:textColor="@android:color/black"
-            app:layout_constraintBaseline_toBaselineOf="@+id/host_name"
-            android:layout_height="wrap_content" />
+            android:transitionName="transition"
+            app:cardCornerRadius="4dp"
+            app:cardElevation="2dp"
+            app:cardMaxElevation="10dp"
+            app:cardPreventCornerOverlap="true"
+            app:cardUseCompatPadding="true"
+            tools:context="com.sukaiyi.bandwagonvps.HostDetailActivity">
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <View
-            android:layout_width="345dp"
-            android:layout_height="1dp"
-            android:background="#000000"
-            app:layout_constraintTop_toBottomOf="@+id/host_name"
-            app:layout_constraintRight_toRightOf="@+id/plan"
-            />
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/header"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:foreground="?attr/selectableItemBackground"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-    </android.support.constraint.ConstraintLayout>
-</android.support.v7.widget.CardView>
+                    <TextView
+                        android:id="@+id/host_name"
+                        style="@android:style/TextAppearance.DeviceDefault.Large"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="hostname"
+                        android:textColor="@android:color/black"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        app:layout_constraintTop_toBottomOf="@id/host_name"
+                        android:id="@+id/host_id"
+                        android:layout_marginTop="10dp"
+                        style="@android:style/TextAppearance.DeviceDefault.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="API ID"/>
+
+                    <TextView
+                        android:id="@+id/plan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="wagon10g512m1t-ca"
+                        app:layout_constraintBaseline_toBaselineOf="@+id/host_name"
+                        app:layout_constraintRight_toRightOf="parent" />
+
+                    <TextView
+                        android:id="@+id/email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="xxxx@xx.com"
+                        app:layout_constraintLeft_toLeftOf="@+id/plan"
+                        app:layout_constraintTop_toBottomOf="@+id/plan" />
+                </android.support.constraint.ConstraintLayout>
+
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="345dp"
+                    android:layout_height="1dp"
+                    android:background="#424242"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/header" />
+
+                <com.sukaiyi.bandwagonvps.view.HostSimpleItemView
+                    android:id="@+id/node_location"
+                    android:layout_width="345dp"
+                    android:layout_height="wrap_content"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:padding="10dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/divider"
+                    app:title="主机所在地"
+                    app:value="..."/>
+
+                <com.sukaiyi.bandwagonvps.view.HostSimpleItemView
+                    android:id="@+id/node_os"
+                    android:layout_width="345dp"
+                    android:layout_height="wrap_content"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:padding="10dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/node_location"
+                    app:title="主机系统"
+                    app:value="..." />
+
+                <com.sukaiyi.bandwagonvps.view.HostSimpleItemView
+                    android:id="@+id/node_ip"
+                    android:layout_width="345dp"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:foreground="?attr/selectableItemBackground"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/node_os"
+                    app:title="主机 IP"
+                    app:value="..." />
+
+                <com.sukaiyi.bandwagonvps.view.HostSimpleItemView
+                    android:id="@+id/node_ssh_port"
+                    android:layout_width="345dp"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:foreground="?attr/selectableItemBackground"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/node_ip"
+                    app:title="SSH 端口"
+                    app:value="..." />
+
+                <com.sukaiyi.bandwagonvps.view.HostSimpleItemView
+                    android:id="@+id/node_status"
+                    android:layout_width="345dp"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:foreground="?attr/selectableItemBackground"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/node_ssh_port"
+                    app:title="主机状态"
+                    app:value="..." />
+
+                <com.sukaiyi.bandwagonvps.view.HostSimpleItemView
+                    android:id="@+id/node_cpu"
+                    android:layout_width="345dp"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:foreground="?attr/selectableItemBackground"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/node_status"
+                    app:title="CPU 负载"
+                    app:value="..." />
+
+                <com.sukaiyi.bandwagonvps.view.HostProgressItemView
+                    android:id="@+id/bandwidth_usage"
+                    android:layout_width="345dp"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/node_cpu"
+                    app:tips="reset:"
+                    android:foreground="?attr/selectableItemBackground"
+                    app:title="流量使用情况"
+                    app:value="..." />
+
+                <com.sukaiyi.bandwagonvps.view.HostProgressItemView
+                    android:id="@+id/ram_usage"
+                    android:layout_width="345dp"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:foreground="?attr/selectableItemBackground"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/bandwidth_usage"
+                    app:title="主机内存"
+                    app:value="..." />
+
+            </android.support.constraint.ConstraintLayout>
+        </android.support.v7.widget.CardView>
+
+    </android.support.v4.widget.NestedScrollView>
+</android.support.v4.widget.SwipeRefreshLayout>

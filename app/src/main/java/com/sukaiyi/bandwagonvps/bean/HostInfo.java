@@ -1,20 +1,23 @@
 package com.sukaiyi.bandwagonvps.bean;
 
 public class HostInfo implements java.io.Serializable {
-    private static final long serialVersionUID = -4468241521556421910L;
+    private static final long serialVersionUID = -8740880475651744113L;
+    private int ssh_port;
     private String node_ip;
     private String os;
     private String node_location;
     private int plan_max_ipv6s;
     private String[] ip_addresses;
     private boolean location_ipv6_ready;
-    private int error;
+    private String is_cpu_throttled;
     private int plan_ram;
     private boolean suspended;
     private long data_counter;
     private String vm_type;
     private String hostname;
+    private HostInfoaVz_quota vz_quota;
     private int data_next_reset;
+    private HostInfoaVz_status vz_status;
     private long plan_monthly_data;
     private boolean rdns_api_available;
     private String node_alias;
@@ -22,6 +25,15 @@ public class HostInfo implements java.io.Serializable {
     private long plan_disk;
     private String plan;
     private String email;
+    private int error;
+
+    public int getSsh_port() {
+        return this.ssh_port;
+    }
+
+    public void setSsh_port(int ssh_port) {
+        this.ssh_port = ssh_port;
+    }
 
     public String getNode_ip() {
         return this.node_ip;
@@ -71,12 +83,12 @@ public class HostInfo implements java.io.Serializable {
         this.location_ipv6_ready = location_ipv6_ready;
     }
 
-    public int getError() {
-        return this.error;
+    public String getIs_cpu_throttled() {
+        return this.is_cpu_throttled;
     }
 
-    public void setError(int error) {
-        this.error = error;
+    public void setIs_cpu_throttled(String is_cpu_throttled) {
+        this.is_cpu_throttled = is_cpu_throttled;
     }
 
     public int getPlan_ram() {
@@ -119,12 +131,28 @@ public class HostInfo implements java.io.Serializable {
         this.hostname = hostname;
     }
 
+    public HostInfoaVz_quota getVz_quota() {
+        return this.vz_quota;
+    }
+
+    public void setVz_quota(HostInfoaVz_quota vz_quota) {
+        this.vz_quota = vz_quota;
+    }
+
     public int getData_next_reset() {
         return this.data_next_reset;
     }
 
     public void setData_next_reset(int data_next_reset) {
         this.data_next_reset = data_next_reset;
+    }
+
+    public HostInfoaVz_status getVz_status() {
+        return this.vz_status;
+    }
+
+    public void setVz_status(HostInfoaVz_status vz_status) {
+        this.vz_status = vz_status;
     }
 
     public long getPlan_monthly_data() {
@@ -181,5 +209,13 @@ public class HostInfo implements java.io.Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public int getError() {
+        return error;
+    }
+
+    public void setError(int error) {
+        this.error = error;
     }
 }

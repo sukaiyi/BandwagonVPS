@@ -7,6 +7,7 @@
     android:foreground="?attr/selectableItemBackground"
     app:cardCornerRadius="4dp"
     app:cardElevation="2dp"
+    android:transitionName="transition"
     app:cardMaxElevation="10dp"
     app:cardUseCompatPadding="true"
     app:cardPreventCornerOverlap="true">
@@ -19,7 +20,7 @@
             android:id="@+id/host_name_view"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            style="@android:style/TextAppearance.DeviceDefault.Medium"
+            style="@android:style/TextAppearance.DeviceDefault.Large"
             android:textColor="@android:color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
