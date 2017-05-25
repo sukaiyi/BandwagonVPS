@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Pair;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -162,7 +163,13 @@ public class MainActivity extends AppCompatActivity implements BaseQuickAdapter.
         Intent intent = new Intent(MainActivity.this,HostDetailActivity.class);
         intent.putExtra("host",mHostListAdapter.getData().get(position));
 
-        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this,view,"transition").toBundle());
+        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this,
+                Pair.create(view,"transition_card_view"),
+                Pair.create(findViewById(R.id.add_host_button),"transition_floating_button"),
+                Pair.create(view.findViewById(R.id.host_name_view), "transition_host_name"),
+                Pair.create(view.findViewById(R.id.host_id_view), "transition_host_id")
+        );
+        startActivity(intent, options.toBundle());
     }
 
     @Override

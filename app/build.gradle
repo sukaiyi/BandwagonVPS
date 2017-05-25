@@ -36,4 +36,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
     compile 'com.loopj.android:android-async-http:1.4.9'
+
+    compile 'com.github.QuadFlask:FloatingActionMenu:0.0.1@aar'
 }
