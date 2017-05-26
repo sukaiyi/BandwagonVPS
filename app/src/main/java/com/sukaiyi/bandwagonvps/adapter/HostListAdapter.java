@@ -21,6 +21,7 @@ public class HostListAdapter extends BaseQuickAdapter<Host, BaseViewHolder> {
     protected void convert(BaseViewHolder viewHolder, Host item) {
         viewHolder.setText(R.id.host_name_view,item.getName())
                 .setText(R.id.host_id_view,item.getID())
-                .addOnClickListener(R.id.host_menu_button);
+                .setText(R.id.host_plan_view,item.getPlan())
+                .setText(R.id.host_email_view,item.getEmail());
     }
 }

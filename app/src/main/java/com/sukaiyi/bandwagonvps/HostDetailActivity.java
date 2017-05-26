@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
@@ -89,6 +90,9 @@ public class HostDetailActivity extends AppCompatActivity implements SwipeRefres
             return;
         }
         setContentView(R.layout.activity_host_detail);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setLogo(R.drawable.ic_vpn_white_24dp);
         ButterKnife.bind(this);
 
         loadCache();

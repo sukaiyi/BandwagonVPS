@@ -1,7 +1,6 @@
 package com.sukaiyi.bandwagonvps.bean;
 
 import com.google.gson.Gson;
-import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
@@ -13,6 +12,10 @@ public class Host implements Serializable{
     private String name;
     private String ID;
     private String apiKey;
+
+    private String plan;
+
+    private String email;
 
     public Host() {
     }
@@ -51,5 +54,21 @@ public class Host implements Serializable{
     public String toString() {
         Gson gson = new Gson();
         return gson.toJson(this);
+    }
+
+    public String getPlan() {
+        return plan;
+    }
+
+    public void setPlan(String plan) {
+        this.plan = plan;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

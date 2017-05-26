@@ -50,6 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="wagon10g512m1t-ca"
+                android:transitionName="transition_plan_view"
                 app:layout_constraintBaseline_toBaselineOf="@+id/host_name"
                 app:layout_constraintRight_toRightOf="parent"/>
 
@@ -58,6 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="xxxx@xx.com"
+                android:transitionName="transition_email_view"
                 app:layout_constraintLeft_toLeftOf="@+id/plan"
                 app:layout_constraintTop_toBottomOf="@+id/plan"/>
         </android.support.constraint.ConstraintLayout>
