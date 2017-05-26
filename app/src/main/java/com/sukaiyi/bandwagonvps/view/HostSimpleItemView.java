@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.sukaiyi.bandwagonvps.R;
 
+
 /**
  * Created by sukaiyi on 2017/05/23.
  */
@@ -48,8 +49,8 @@ public class HostSimpleItemView extends LinearLayout {
 
     private void getAttrs(Context context, AttributeSet attrs) {
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.HostItemAttr);
-        mTitle = ta.getString(R.styleable.HostItemAttr_title);
-        mValue = ta.getString(R.styleable.HostItemAttr_value);
+        mTitle = ta.getString(R.styleable.HostItemAttr_itemTitle);
+        mValue = ta.getString(R.styleable.HostItemAttr_itemValue);
         ta.recycle();
     }
 

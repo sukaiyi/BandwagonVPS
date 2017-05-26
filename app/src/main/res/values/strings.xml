@@ -1,5 +1,13 @@
 <resources>
     <string name="app_name">Bandwagon VPS</string>
-    <string name="action_settings">Settings</string>
-    <string name="title_activity_main2">Main2Activity</string>
+    <string name="action_settings">设置</string>
+
+    <string name="str_host_location">主机所在地</string>
+    <string name="str_host_os">主机系统</string>
+    <string name="str_host_ip_address">主机 IP</string>
+    <string name="str_host_ssh_port">SSH 端口</string>
+    <string name="str_host_status">主机状态</string>
+    <string name="str_host_cpu_load">CPU 负载</string>
+    <string name="str_bandwidth_usage">流量使用情况</string>
+    <string name="str_host_ram">主机内存</string>
 </resources>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="HostItemAttr">
-        <attr name="title" format="string"/>
-        <attr name="value" format="string"/>
-        <attr name="tips" format="string"/>
-        <attr name="progress" format="integer"/>
+        <attr name="itemTitle" format="string|reference"/>
+        <attr name="itemValue" format="string|reference"/>
+        <attr name="itemTips" format="string|reference"/>
+        <attr name="itemProgress" format="integer"/>
     </declare-styleable>
 </resources>

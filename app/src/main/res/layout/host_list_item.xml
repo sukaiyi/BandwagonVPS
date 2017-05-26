@@ -9,14 +9,14 @@
     android:transitionName="transition_card_view"
     app:cardCornerRadius="4dp"
     app:cardElevation="2dp"
-    app:cardMaxElevation="10dp"
+    app:cardMaxElevation="5dp"
     app:cardPreventCornerOverlap="true"
     app:cardUseCompatPadding="true">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp">
+        android:layout_margin="20dp">
 
         <TextView
             android:id="@+id/host_name_view"

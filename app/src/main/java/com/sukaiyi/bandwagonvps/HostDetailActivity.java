@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -44,6 +45,8 @@ public class HostDetailActivity extends AppCompatActivity implements SwipeRefres
     @BindView(R.id.root_view)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
+    @BindView(R.id.header)
+    ConstraintLayout mHeader;
     @BindView(R.id.host_name)
     TextView mHostNameView;
     @BindView(R.id.host_id)
@@ -77,8 +80,8 @@ public class HostDetailActivity extends AppCompatActivity implements SwipeRefres
     FloatingActionButton mActionButtonRestart;
     @BindView(R.id.action_button_kill)
     FloatingActionButton mActionButtonKill;
-    @BindView(R.id.menu)
-    FloatingActionMenu mFloatingActionMenu;
+    @BindView(R.id.menu_vertical)
+    FloatingActionMenu mFloatingActionVerticalMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +101,7 @@ public class HostDetailActivity extends AppCompatActivity implements SwipeRefres
         loadCache();
         onRefresh();
         mSwipeRefreshLayout.setOnRefreshListener(this);
+
     }
 
     private void loadCache() {
@@ -112,11 +116,11 @@ public class HostDetailActivity extends AppCompatActivity implements SwipeRefres
 
     private void snack(ErrorMessage msg) {
         if (msg.getError() != 0) {
-            Snackbar.make(mFloatingActionMenu,
+            Snackbar.make(mFloatingActionVerticalMenu,
                     "错误:" + msg.getError() + "," + msg.getMessage(),
                     Snackbar.LENGTH_LONG).show();
         } else {
-            Snackbar.make(mFloatingActionMenu,
+            Snackbar.make(mFloatingActionVerticalMenu,
                     "操作成功",
                     Snackbar.LENGTH_LONG).show();
         }
@@ -200,7 +204,7 @@ public class HostDetailActivity extends AppCompatActivity implements SwipeRefres
 
     @OnClick(R.id.header)
     public void onHeaderClick() {
-        this.supportFinishAfterTransition();
+
     }
 
     @OnClick(R.id.node_location)
@@ -237,25 +241,25 @@ public class HostDetailActivity extends AppCompatActivity implements SwipeRefres
 
     @Override
     public void onBackPressed() {
-        if (mFloatingActionMenu.isOpened()) {
-            mFloatingActionMenu.close(true);
+        if (mFloatingActionVerticalMenu.isOpened()) {
+            mFloatingActionVerticalMenu.close(true);
         } else {
             super.onBackPressed();
         }
     }
 
     @Override
-        public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (mFloatingActionMenu.isOpened()) {
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (mFloatingActionVerticalMenu.isOpened()) {
             Rect rect = new Rect();
-            mFloatingActionMenu.getGlobalVisibleRect(rect);
+            mFloatingActionVerticalMenu.getGlobalVisibleRect(rect);
             float x = ev.getRawX();
             float y = ev.getRawY();
-            boolean contains = rect.contains((int)x, (int)y);
-            if(contains){
+            boolean contains = rect.contains((int) x, (int) y);
+            if (contains) {
                 return super.dispatchTouchEvent(ev);
-            }else{
-                mFloatingActionMenu.close(true);
+            } else {
+                mFloatingActionVerticalMenu.close(true);
                 return true;
             }
         } else {
@@ -270,7 +274,8 @@ public class HostDetailActivity extends AppCompatActivity implements SwipeRefres
             R.id.action_button_kill
     })
     public void onClick(View view) {
-        mFloatingActionMenu.close(true);
+        mFloatingActionVerticalMenu.close(true);
+
         JsonHttpResponseHandler handler = new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {

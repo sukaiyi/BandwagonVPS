@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:foreground="?attr/selectableItemBackground"
-            android:padding="15dp"
+            android:padding="20dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -89,8 +89,8 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="parent"
-                app:title="主机所在地"
-                app:value="..."/>
+                app:itemTitle="@string/str_host_location"
+                app:itemValue="..."/>
 
             <com.sukaiyi.bandwagonvps.view.HostSimpleItemView
                 android:id="@+id/node_os"
@@ -101,8 +101,8 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/node_location"
-                app:title="主机系统"
-                app:value="..."/>
+                app:itemTitle="@string/str_host_os"
+                app:itemValue="..."/>
 
             <com.sukaiyi.bandwagonvps.view.HostSimpleItemView
                 android:id="@+id/node_ip"
@@ -113,8 +113,8 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/node_os"
-                app:title="主机 IP"
-                app:value="..."/>
+                app:itemTitle="@string/str_host_ip_address"
+                app:itemValue="..."/>
 
             <com.sukaiyi.bandwagonvps.view.HostSimpleItemView
                 android:id="@+id/node_ssh_port"
@@ -125,8 +125,8 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/node_ip"
-                app:title="SSH 端口"
-                app:value="..."/>
+                app:itemTitle="@string/str_host_ssh_port"
+                app:itemValue="..."/>
 
             <com.sukaiyi.bandwagonvps.view.HostSimpleItemView
                 android:id="@+id/node_status"
@@ -137,8 +137,8 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/node_ssh_port"
-                app:title="主机状态"
-                app:value="..."/>
+                app:itemTitle="@string/str_host_status"
+                app:itemValue="..."/>
 
             <com.sukaiyi.bandwagonvps.view.HostSimpleItemView
                 android:id="@+id/node_cpu"
@@ -149,8 +149,8 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/node_status"
-                app:title="CPU 负载"
-                app:value="..."/>
+                app:itemTitle="@string/str_host_cpu_load"
+                app:itemValue="..."/>
 
             <com.sukaiyi.bandwagonvps.view.HostProgressItemView
                 android:id="@+id/bandwidth_usage"
@@ -161,9 +161,9 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/node_cpu"
-                app:tips="reset:"
-                app:title="流量使用情况"
-                app:value="..."/>
+                app:itemTips="reset:"
+                app:itemTitle="@string/str_bandwidth_usage"
+                app:itemValue="..."/>
 
             <com.sukaiyi.bandwagonvps.view.HostProgressItemView
                 android:id="@+id/ram_usage"
@@ -174,8 +174,8 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/bandwidth_usage"
-                app:title="主机内存"
-                app:value="..."/>
+                app:itemTitle="@string/str_host_ram"
+                app:itemValue="..."/>
         </android.support.constraint.ConstraintLayout>
 
     </android.support.v7.widget.CardView>

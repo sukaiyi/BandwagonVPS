@@ -56,9 +56,9 @@ public class HostProgressItemView extends LinearLayout {
 
     private void getAttrs(Context context, AttributeSet attrs) {
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.HostItemAttr);
-        mTitle = ta.getString(R.styleable.HostItemAttr_title);
-        mValue = ta.getString(R.styleable.HostItemAttr_value);
-        mTips = ta.getString(R.styleable.HostItemAttr_tips);
+        mTitle = ta.getString(R.styleable.HostItemAttr_itemTitle);
+        mValue = ta.getString(R.styleable.HostItemAttr_itemValue);
+        mTips = ta.getString(R.styleable.HostItemAttr_itemTips);
         ta.recycle();
     }
 
