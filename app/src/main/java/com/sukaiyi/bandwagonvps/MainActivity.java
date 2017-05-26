@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +12,8 @@ import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Pair;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -38,7 +39,6 @@ import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import cz.msebera.android.httpclient.Header;
 
 public class MainActivity extends AppCompatActivity implements BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.OnItemChildClickListener {
@@ -93,8 +93,7 @@ public class MainActivity extends AppCompatActivity implements BaseQuickAdapter.
         editor.apply();
     }
 
-    @OnClick(R.id.add_host_button)
-    public void onAddButtonClick(final FloatingActionButton button) {
+    public void addNewHost() {
         new MaterialDialog.Builder(this)
                 .title("添加主机")
                 .customView(R.layout.dialog_add_host, true)
@@ -129,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements BaseQuickAdapter.
                             mHostListAdapter.addData(host);
                             refreshName(host);
                         }else{
-                            Snackbar.make(button,"没有输入信息",Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(null,"没有输入信息",Snackbar.LENGTH_LONG).show();
                         }
                     }
                 })
@@ -159,13 +158,32 @@ public class MainActivity extends AppCompatActivity implements BaseQuickAdapter.
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.activity_main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menu_add_host:
+                addNewHost();
+                break;
+            default:
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         Intent intent = new Intent(MainActivity.this,HostDetailActivity.class);
         intent.putExtra("host",mHostListAdapter.getData().get(position));
 
         ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this,
-                Pair.create(view,"transition_card_view"),
-                Pair.create(findViewById(R.id.add_host_button),"transition_floating_button"),
+                Pair.create(view, "transition_card_view"),
                 Pair.create(view.findViewById(R.id.host_name_view), "transition_host_name"),
                 Pair.create(view.findViewById(R.id.host_id_view), "transition_host_id")
         );

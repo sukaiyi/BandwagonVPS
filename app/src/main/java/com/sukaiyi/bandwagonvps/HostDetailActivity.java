@@ -2,17 +2,23 @@ package com.sukaiyi.bandwagonvps;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.TextView;
 
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import com.google.gson.Gson;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.orhanobut.logger.Logger;
+import com.sukaiyi.bandwagonvps.bean.ErrorMessage;
 import com.sukaiyi.bandwagonvps.bean.Host;
 import com.sukaiyi.bandwagonvps.bean.HostInfo;
 import com.sukaiyi.bandwagonvps.net.ApiGate;
@@ -45,29 +51,33 @@ public class HostDetailActivity extends AppCompatActivity implements SwipeRefres
     TextView mPlanView;
     @BindView(R.id.email)
     TextView mEmailView;
-
     @BindView(R.id.node_location)
     HostSimpleItemView mHostLocation;
-
     @BindView(R.id.node_os)
     HostSimpleItemView mHostOS;
-
     @BindView(R.id.node_ip)
     HostSimpleItemView mHostIP;
-
     @BindView(R.id.node_ssh_port)
     HostSimpleItemView mHostSSHPort;
-
     @BindView(R.id.node_status)
     HostSimpleItemView mHostStatus;
-
     @BindView(R.id.node_cpu)
     HostSimpleItemView mHostCpu;
     @BindView(R.id.bandwidth_usage)
     HostProgressItemView mBandwidthUsage;
-
     @BindView(R.id.ram_usage)
     HostProgressItemView mRamUsage;
+
+    @BindView(R.id.action_button_start)
+    FloatingActionButton mActionButtonStart;
+    @BindView(R.id.action_button_stop)
+    FloatingActionButton mActionButtonStop;
+    @BindView(R.id.action_button_restart)
+    FloatingActionButton mActionButtonRestart;
+    @BindView(R.id.action_button_kill)
+    FloatingActionButton mActionButtonKill;
+    @BindView(R.id.menu)
+    FloatingActionMenu mFloatingActionMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,37 +92,30 @@ public class HostDetailActivity extends AppCompatActivity implements SwipeRefres
         ButterKnife.bind(this);
 
         loadCache();
-
-        getHostInfo(new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                super.onSuccess(statusCode, headers, response);
-                Gson gson = new Gson();
-                HostInfo info = gson.fromJson(response.toString(), HostInfo.class);
-                Logger.d(response);
-                if (info.getError() == 0) {
-                    mInfo = info;
-                    bindView();
-                } else {
-                    error(info.getError());
-                }
-            }
-        });
+        onRefresh();
         mSwipeRefreshLayout.setOnRefreshListener(this);
     }
 
     private void loadCache() {
         SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
-        String info = sharedPreferences.getString(mHost.getID(),"");
-        if(TextUtils.isEmpty(info)){
+        String info = sharedPreferences.getString(mHost.getID(), "");
+        if (TextUtils.isEmpty(info)) {
             return;
         }
-        mInfo = new Gson().fromJson(info,HostInfo.class);
+        mInfo = new Gson().fromJson(info, HostInfo.class);
         bindView();
     }
 
-    private void error(int errorCode) {
-        Snackbar.make(mHostNameView, "错误:" + errorCode, Snackbar.LENGTH_LONG).show();
+    private void snack(ErrorMessage msg) {
+        if (msg.getError() != 0) {
+            Snackbar.make(mFloatingActionMenu,
+                    "错误:" + msg.getError() + "," + msg.getMessage(),
+                    Snackbar.LENGTH_LONG).show();
+        } else {
+            Snackbar.make(mFloatingActionMenu,
+                    "操作成功",
+                    Snackbar.LENGTH_LONG).show();
+        }
     }
 
     private void bindView() {
@@ -141,22 +144,22 @@ public class HostDetailActivity extends AppCompatActivity implements SwipeRefres
         mBandwidthUsage.setProgress((int) (mInfo.getData_counter() * 100 / mInfo.getPlan_monthly_data()));
         mBandwidthUsage.setTips("Reset:" + new Date(mInfo.getData_next_reset() * 1000l).toString());
         String ramUsage = mInfo.getVz_status().getKmemsize();
-        if(ramUsage.equals("-")){
+        if (ramUsage.equals("-")) {
             ramUsage = "0";
         }
         mRamUsage.setValue(Switch.b2Any(Integer.parseInt(ramUsage)) + "/" + Switch.b2Any(mInfo.getPlan_ram()));
     }
 
-    private void getHostInfo(JsonHttpResponseHandler handler) {
+    private void apiCall(String api, JsonHttpResponseHandler handler) {
         RequestParams params = new RequestParams();
         params.put("veid", mHost.getID());
         params.put("api_key", mHost.getApiKey());
-        ApiGate.get("getLiveServiceInfo", params, handler);
+        ApiGate.get(api, params, handler);
     }
 
     @Override
     public void onRefresh() {
-        getHostInfo(new JsonHttpResponseHandler() {
+        apiCall("getLiveServiceInfo", new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
@@ -168,7 +171,8 @@ public class HostDetailActivity extends AppCompatActivity implements SwipeRefres
                     mInfo = info;
                     bindView();
                 } else {
-                    error(info.getError());
+                    ErrorMessage msg = gson.fromJson(response.toString(), ErrorMessage.class);
+                    snack(msg);
                 }
             }
         });
@@ -180,62 +184,113 @@ public class HostDetailActivity extends AppCompatActivity implements SwipeRefres
         super.onDestroy();
     }
 
-    private void saveCache(){
-        if(mInfo==null){
+    private void saveCache() {
+        if (mInfo == null) {
             return;
         }
         SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(mHost.getID(),new Gson().toJson(mInfo));
+        editor.putString(mHost.getID(), new Gson().toJson(mInfo));
         editor.apply();
     }
 
     @OnClick(R.id.header)
-    public void onHeaderClick(){
+    public void onHeaderClick() {
         this.supportFinishAfterTransition();
     }
 
     @OnClick(R.id.node_location)
-    public void onHostLocationClick(){
+    public void onHostLocationClick() {
     }
 
     @OnClick(R.id.node_os)
-    public void HostOSClick(){
-
+    public void onHostOSClick() {
     }
 
     @OnClick(R.id.node_ip)
-    public void HostIPClick(){
-
+    public void onHostIPClick() {
     }
-
 
     @OnClick(R.id.node_ssh_port)
-    public void HostSSHPortClick(){
-
+    public void onHostSSHPortClick() {
     }
-
 
     @OnClick(R.id.node_status)
-    public void HostStatusClick(){
-
+    public void onHostStatusClick() {
     }
 
-
     @OnClick(R.id.node_cpu)
-    public void HostCPUClick(){
-
+    public void onHostCPUClick() {
     }
 
     @OnClick(R.id.bandwidth_usage)
-    public void HostBandwidthUsageClick(){
-
+    public void onHostBandwidthUsageClick() {
     }
-
 
     @OnClick(R.id.ram_usage)
-    public void HostRAMUsageClick(){
-
+    public void onHostRAMUsageClick() {
     }
 
+    @Override
+    public void onBackPressed() {
+        if (mFloatingActionMenu.isOpened()) {
+            mFloatingActionMenu.close(true);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+        public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (mFloatingActionMenu.isOpened()) {
+            Rect rect = new Rect();
+            mFloatingActionMenu.getGlobalVisibleRect(rect);
+            float x = ev.getRawX();
+            float y = ev.getRawY();
+            boolean contains = rect.contains((int)x, (int)y);
+            if(contains){
+                return super.dispatchTouchEvent(ev);
+            }else{
+                mFloatingActionMenu.close(true);
+                return true;
+            }
+        } else {
+            return super.dispatchTouchEvent(ev);
+        }
+    }
+
+    @OnClick({
+            R.id.action_button_start,
+            R.id.action_button_stop,
+            R.id.action_button_restart,
+            R.id.action_button_kill
+    })
+    public void onClick(View view) {
+        mFloatingActionMenu.close(true);
+        JsonHttpResponseHandler handler = new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Gson gson = new Gson();
+                ErrorMessage msg = gson.fromJson(response.toString(), ErrorMessage.class);
+                snack(msg);
+                if (msg.getError() == 0) {
+                    onRefresh();
+                }
+            }
+        };
+        switch (view.getId()) {
+            case R.id.action_button_start:
+                apiCall("start", handler);
+                break;
+            case R.id.action_button_stop:
+                apiCall("stop", handler);
+                break;
+            case R.id.action_button_restart:
+                apiCall("restart", handler);
+                break;
+            case R.id.action_button_kill:
+                apiCall("kill", handler);
+                break;
+        }
+    }
 }

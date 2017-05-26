@@ -37,5 +37,5 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
     compile 'com.loopj.android:android-async-http:1.4.9'
 
-    compile 'com.github.QuadFlask:FloatingActionMenu:0.0.1@aar'
+    compile 'com.github.clans:fab:1.6.4'
 }

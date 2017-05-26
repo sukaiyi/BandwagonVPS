@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.sukaiyi.bandwagonvps.HostDetailActivity"
+    android:layout_height="match_parent">
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/root_view"
@@ -14,227 +16,92 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/card_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:transitionName="transition_card_view"
-                app:cardCornerRadius="4dp"
-                app:cardElevation="2dp"
-                app:cardMaxElevation="10dp"
-                app:cardPreventCornerOverlap="true"
-                app:cardUseCompatPadding="true"
-                tools:context="com.sukaiyi.bandwagonvps.HostDetailActivity">
+            <include layout="@layout/content_host_detail"/>
 
-                <android.support.constraint.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <android.support.constraint.ConstraintLayout
-                        android:id="@+id/header"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:foreground="?attr/selectableItemBackground"
-                        android:padding="10dp"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <TextView
-                            android:id="@+id/host_name"
-                            style="@android:style/TextAppearance.DeviceDefault.Large"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="hostname"
-                            android:textColor="@android:color/black"
-                            android:transitionName="transition_host_name"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"/>
-
-                        <TextView
-                            android:id="@+id/host_id"
-                            style="@android:style/TextAppearance.DeviceDefault.Small"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="API ID"
-                            android:transitionName="transition_host_id"
-                            app:layout_constraintTop_toBottomOf="@id/host_name"/>
-
-                        <TextView
-                            android:id="@+id/plan"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="wagon10g512m1t-ca"
-                            app:layout_constraintBaseline_toBaselineOf="@+id/host_name"
-                            app:layout_constraintRight_toRightOf="parent"/>
-
-                        <TextView
-                            android:id="@+id/email"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="xxxx@xx.com"
-                            app:layout_constraintLeft_toLeftOf="@+id/plan"
-                            app:layout_constraintTop_toBottomOf="@+id/plan"/>
-                    </android.support.constraint.ConstraintLayout>
-
-                    <View
-                        android:id="@+id/divider"
-                        android:layout_width="345dp"
-                        android:layout_height="1dp"
-                        android:background="#424242"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/header"/>
-
-                    <com.sukaiyi.bandwagonvps.view.HostSimpleItemView
-                        android:id="@+id/node_location"
-                        android:layout_width="345dp"
-                        android:layout_height="wrap_content"
-                        android:foreground="?attr/selectableItemBackground"
-                        android:padding="10dp"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/divider"
-                        app:title="主机所在地"
-                        app:value="..."/>
-
-                    <com.sukaiyi.bandwagonvps.view.HostSimpleItemView
-                        android:id="@+id/node_os"
-                        android:layout_width="345dp"
-                        android:layout_height="wrap_content"
-                        android:foreground="?attr/selectableItemBackground"
-                        android:padding="10dp"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/node_location"
-                        app:title="主机系统"
-                        app:value="..."/>
-
-                    <com.sukaiyi.bandwagonvps.view.HostSimpleItemView
-                        android:id="@+id/node_ip"
-                        android:layout_width="345dp"
-                        android:layout_height="wrap_content"
-                        android:foreground="?attr/selectableItemBackground"
-                        android:padding="10dp"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/node_os"
-                        app:title="主机 IP"
-                        app:value="..."/>
-
-                    <com.sukaiyi.bandwagonvps.view.HostSimpleItemView
-                        android:id="@+id/node_ssh_port"
-                        android:layout_width="345dp"
-                        android:layout_height="wrap_content"
-                        android:foreground="?attr/selectableItemBackground"
-                        android:padding="10dp"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/node_ip"
-                        app:title="SSH 端口"
-                        app:value="..."/>
-
-                    <com.sukaiyi.bandwagonvps.view.HostSimpleItemView
-                        android:id="@+id/node_status"
-                        android:layout_width="345dp"
-                        android:layout_height="wrap_content"
-                        android:foreground="?attr/selectableItemBackground"
-                        android:padding="10dp"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/node_ssh_port"
-                        app:title="主机状态"
-                        app:value="..."/>
-
-                    <com.sukaiyi.bandwagonvps.view.HostSimpleItemView
-                        android:id="@+id/node_cpu"
-                        android:layout_width="345dp"
-                        android:layout_height="wrap_content"
-                        android:foreground="?attr/selectableItemBackground"
-                        android:padding="10dp"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/node_status"
-                        app:title="CPU 负载"
-                        app:value="..."/>
-
-                    <com.sukaiyi.bandwagonvps.view.HostProgressItemView
-                        android:id="@+id/bandwidth_usage"
-                        android:layout_width="345dp"
-                        android:layout_height="wrap_content"
-                        android:foreground="?attr/selectableItemBackground"
-                        android:padding="10dp"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/node_cpu"
-                        app:tips="reset:"
-                        app:title="流量使用情况"
-                        app:value="..."/>
-
-                    <com.sukaiyi.bandwagonvps.view.HostProgressItemView
-                        android:id="@+id/ram_usage"
-                        android:layout_width="345dp"
-                        android:layout_height="wrap_content"
-                        android:foreground="?attr/selectableItemBackground"
-                        android:padding="10dp"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/bandwidth_usage"
-                        app:title="主机内存"
-                        app:value="..."/>
-                </android.support.constraint.ConstraintLayout>
-            </android.support.v7.widget.CardView>
         </android.support.v4.widget.NestedScrollView>
     </android.support.v4.widget.SwipeRefreshLayout>
 
-
-    <com.flask.floatingactionmenu.FloatingActionMenu
-        android:id="@+id/fam"
+    <com.github.clans.fab.FloatingActionMenu
+        android:id="@+id/menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        app:fab_labelStyle="@style/fab_labels_style"
         android:layout_alignParentRight="true"
-        android:layout_margin="4dp" >
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        app:menu_animationDelayPerItem="50"
+        app:menu_backgroundColor="@android:color/transparent"
+        app:menu_buttonSpacing="0dp"
+        app:menu_colorNormal="#DA4336"
+        app:menu_colorPressed="#E75043"
+        app:menu_colorRipple="#99FFFFFF"
+        app:menu_fab_size="normal"
+        app:menu_icon="@drawable/ic_add_white_24dp"
+        app:menu_labels_colorNormal="#9575cd"
+        app:menu_labels_colorPressed="#9575cd"
+        app:menu_labels_colorRipple="#66FFFFFF"
+        app:menu_labels_cornerRadius="3dp"
+        app:menu_labels_ellipsize="none"
+        app:menu_labels_hideAnimation="@anim/fab_slide_out_to_right"
+        app:menu_labels_margin="0dp"
+        app:menu_labels_maxLines="-1"
+        app:menu_labels_padding="8dp"
+        app:menu_labels_paddingBottom="4dp"
+        app:menu_labels_paddingLeft="8dp"
+        app:menu_labels_paddingRight="8dp"
+        app:menu_labels_paddingTop="4dp"
+        app:menu_labels_position="left"
+        app:menu_labels_showAnimation="@anim/fab_slide_in_from_right"
+        app:menu_labels_showShadow="true"
+        app:menu_labels_singleLine="false"
+        app:menu_labels_style="@style/fab_labels_style"
+        app:menu_labels_textColor="#FFFFFF"
+        app:menu_labels_textSize="14sp"
+        app:menu_openDirection="up"
+        app:menu_shadowColor="#66000000"
+        app:menu_shadowRadius="4dp"
+        app:menu_shadowXOffset="1dp"
+        app:menu_shadowYOffset="3dp"
+        app:menu_showShadow="true">
 
-        <com.flask.floatingactionmenu.FloatingActionButton
-            android:id="@+id/faba"
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/action_button_start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            app:fab_labelText="启动"
-            app:fab_colorNormal="#e57373"
-            app:fab_normal_icon="@drawable/vector_drawable_play"
-            app:fab_type="mini" />
+            android:src="@drawable/ic_play_white_24dp"
+            app:fab_colorNormal="#81c784"
+            app:fab_label="启动"
+            app:fab_size="mini"/>
 
-        <com.flask.floatingactionmenu.FloatingActionButton
-            android:id="@+id/fabb"
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/action_button_stop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            app:fab_colorNormal="#e57373"
-            app:fab_labelText="停止"
-            app:fab_normal_icon="@drawable/ic_power_settings_white_24dp"
-            app:fab_type="mini" />
+            android:src="@drawable/ic_power_settings_white_24dp"
+            app:fab_colorNormal="#ff8a65"
+            app:fab_label="停止"
+            app:fab_size="mini"/>
 
-        <com.flask.floatingactionmenu.FloatingActionButton
-            android:id="@+id/fabc"
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/action_button_restart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            app:fab_colorNormal="#e57373"
-            app:fab_labelText="重新启动"
-            app:fab_normal_icon="@drawable/ic_refresh_white_24dp"
-            app:fab_type="mini" />
+            android:src="@drawable/ic_refresh_white_24dp"
+            app:fab_colorNormal="#1976d2"
+            app:fab_label="重新启动"
+            app:fab_size="mini"/>
 
-        <com.flask.floatingactionmenu.FloatingActionToggleButton
-            android:id="@+id/fab_toggle"
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/action_button_kill"
             android:layout_width="wrap_content"
-            app:fab_labelStyle="@style/fab_parent_labels_style"
             android:layout_height="wrap_content"
-            app:fab_normal_icon="@drawable/ic_add_white_24dp"
-            app:fab_toggle_icon="@drawable/ic_add_white_24dp" />
+            android:src="@drawable/ic_refresh_white_24dp"
+            app:fab_colorNormal="#d32f2f"
+            app:fab_label="强制停止"
+            app:fab_size="mini"/>
 
-    </com.flask.floatingactionmenu.FloatingActionMenu>
+    </com.github.clans.fab.FloatingActionMenu>
+
+
 </RelativeLayout>
