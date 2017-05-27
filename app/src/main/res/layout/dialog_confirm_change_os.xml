@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:foreground="?attr/selectableItemBackground"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/current_os"
+                style="@android:style/TextAppearance.DeviceDefault.Large"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#039be5"
+                android:maxLines="1"
+                android:paddingBottom="25dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:ellipsize="end"
+                android:paddingTop="25dp"
+                android:text="os"
+                android:textColor="@android:color/black"/>
+
+            <TextView
+                android:id="@+id/to_os"
+                style="@android:style/TextAppearance.DeviceDefault.Large"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#e3f2fd"
+                android:maxLines="1"
+                android:paddingBottom="25dp"
+                android:ellipsize="end"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="25dp"
+                android:text="os"
+                android:textColor="@android:color/black"/>
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_arrow_downward_gray_24dp" />
+    </FrameLayout>
+
+    <TextView
+        style="@android:style/TextAppearance.DeviceDefault.Small"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#e3f2fd"
+        android:padding="20dp"
+        android:text="警告：更换系统会丢失所有数据"/>
+
+    <TextView
+        android:id="@+id/button"
+        style="@android:style/TextAppearance.DeviceDefault.Medium"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:background="#e3f2fd"
+        android:foreground="?attr/selectableItemBackground"
+        android:gravity="center"
+        android:paddingBottom="20dp"
+        android:paddingTop="20dp"
+        android:text="确认"
+        android:textColor="@android:color/black"/>
+
+</LinearLayout>

@@ -8,6 +8,7 @@
     <string name="str_host_ssh_port">SSH 端口</string>
     <string name="str_host_status">主机状态</string>
     <string name="str_host_cpu_load">CPU 负载</string>
+    <string name="str_host_root_password">Root Password</string>
     <string name="str_bandwidth_usage">流量使用情况</string>
     <string name="str_host_ram">主机内存</string>
 </resources>

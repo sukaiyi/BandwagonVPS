@@ -20,6 +20,10 @@ public class ApiGate {
         client.get(getAbsoluteUrl(url), params, responseHandler);
     }
 
+    public static void cancelAllRequests(){
+        client.cancelAllRequests(true);
+    }
+
     private static String getAbsoluteUrl(String relativeUrl) {
         return BASE_URL + relativeUrl;
     }

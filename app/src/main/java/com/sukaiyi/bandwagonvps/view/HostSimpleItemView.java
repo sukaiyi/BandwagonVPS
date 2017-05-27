@@ -73,8 +73,16 @@ public class HostSimpleItemView extends LinearLayout {
         mValueView.setText(value);
     }
 
+    public String getValue(){
+        return mValue;
+    }
+
     public void setTitle(String title){
         this.mTitle = title;
         mTitleView.setText(title);
+    }
+
+    public String getTitle(){
+        return mTitle;
     }
 }

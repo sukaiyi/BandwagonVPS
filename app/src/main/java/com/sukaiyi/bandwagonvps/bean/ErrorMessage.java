@@ -4,6 +4,11 @@ public class ErrorMessage {
     private int error;
     private String message;
 
+    public ErrorMessage(int error, String message) {
+        this.error = error;
+        this.message = message;
+    }
+
     public int getError() {
         return this.error;
     }

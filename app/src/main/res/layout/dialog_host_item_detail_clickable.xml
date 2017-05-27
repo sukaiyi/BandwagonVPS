@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/title"
+        style="@android:style/TextAppearance.DeviceDefault.Medium"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:background="#039be5"
+        android:foreground="?attr/selectableItemBackground"
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="25dp"
+        android:text="@string/str_host_os"
+        android:textColor="@android:color/white"/>
+
+    <TextView
+        android:id="@+id/value"
+        style="@android:style/TextAppearance.DeviceDefault.Large"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:background="#e3f2fd"
+        android:foreground="?attr/selectableItemBackground"
+        android:paddingBottom="25dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:transitionName="transition_os"
+        android:paddingTop="25dp"
+        android:textColor="@android:color/black"/>
+
+    <TextView
+        android:id="@+id/tips"
+        style="@android:style/TextAppearance.DeviceDefault.Small"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:background="#e3f2fd"
+        android:padding="10dp"
+        android:foreground="?attr/selectableItemBackground" />
+
+    <TextView
+        android:id="@+id/button"
+        style="@android:style/TextAppearance.DeviceDefault.Medium"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:background="#e3f2fd"
+        android:foreground="?attr/selectableItemBackground"
+        android:gravity="center"
+        android:paddingBottom="20dp"
+        android:paddingTop="20dp"
+        android:text="确定"
+        android:textColor="@android:color/black"/>
+
+</LinearLayout>
