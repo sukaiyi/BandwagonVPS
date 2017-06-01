@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="300dp"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:id="@+id/host_name_view"
+            style="@android:style/TextAppearance.DeviceDefault.Large"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="#039be5"
+            android:drawableEnd="@drawable/ic_vpn_white_24dp"
+            android:foreground="?attr/selectableItemBackground"
+            android:paddingBottom="10dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="20dp"
+            android:text="hello"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textColor="@android:color/white"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <LinearLayout
+            android:id="@+id/host_more_info"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="#e3f2fd"
+            android:foreground="?attr/selectableItemBackground"
+            android:orientation="horizontal"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/host_name_view">
+
+            <TextView
+                android:id="@+id/host_veid_view"
+                style="@android:style/TextAppearance.DeviceDefault.Medium"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1.0"
+                android:background="#e3f2fd"
+                android:padding="15dp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="496375"
+                android:textColor="@android:color/black"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="20dp"
+                android:paddingEnd="5dp"
+                android:paddingStart="5dp"
+                app:paddingStart="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="20dp">
+
+                <TextView
+                    android:id="@+id/host_plan_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#e3f2fd"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:text="wagon10g512m1t-ca"
+                    android:textColor="@android:color/darker_gray"/>
+
+                <TextView
+                    android:id="@+id/host_email_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/host_plan_view"
+                    android:background="#e3f2fd"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:text="im.sukaiyi@gmail.com"
+                    android:textColor="@android:color/darker_gray"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/change_host_name"
+            style="@android:style/TextAppearance.DeviceDefault.Medium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="#e3f2fd"
+            android:foreground="?attr/selectableItemBackground"
+            android:text="更改主机名"
+            android:paddingBottom="15dp"
+            android:paddingTop="15dp"
+            android:gravity="center"
+            android:textColor="@android:color/black"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/host_more_info"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+</LinearLayout>

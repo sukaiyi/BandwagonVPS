@@ -84,9 +84,18 @@
             android:id="@+id/action_button_kill"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_refresh_white_24dp"
+            android:src="@drawable/ic_stop_white_24dp"
             app:fab_colorNormal="#d32f2f"
             app:fab_label="强制停止"
+            app:fab_size="mini"/>
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/action_button_shell"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_enter_white_24dp"
+            app:fab_colorNormal="#d32f2f"
+            app:fab_label="Shell"
             app:fab_size="mini"/>
 
     </com.github.clans.fab.FloatingActionMenu>

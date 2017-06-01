@@ -34,6 +34,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="hostname"
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     android:textColor="@android:color/black"
                     android:transitionName="transition_host_name"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -46,6 +48,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="VEID"
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     android:transitionName="transition_host_id"
                     app:layout_constraintTop_toBottomOf="@id/host_name"/>
 
@@ -54,17 +58,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="wagon10g512m1t-ca"
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     android:transitionName="transition_plan_view"
                     app:layout_constraintBaseline_toBaselineOf="@+id/host_name"
                     app:layout_constraintRight_toRightOf="parent"/>
 
                 <TextView
                     android:id="@+id/email"
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="xxxx@xx.com"
                     android:transitionName="transition_email_view"
-                    app:layout_constraintLeft_toLeftOf="@+id/plan"
+                    app:layout_constraintRight_toRightOf="@+id/plan"
                     app:layout_constraintTop_toBottomOf="@+id/plan"/>
             </android.support.constraint.ConstraintLayout>
 
@@ -121,6 +129,18 @@
                     app:layout_constraintTop_toBottomOf="@+id/node_os"/>
 
                 <com.sukaiyi.bandwagonvps.view.HostSimpleItemView
+                    android:id="@+id/node_mac"
+                    android:layout_width="345dp"
+                    android:layout_height="wrap_content"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:padding="10dp"
+                    app:itemTitle="@string/str_host_mac"
+                    app:itemValue="..."
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/node_ip"/>
+
+                <com.sukaiyi.bandwagonvps.view.HostSimpleItemView
                     android:id="@+id/node_ssh_port"
                     android:layout_width="345dp"
                     android:layout_height="wrap_content"
@@ -130,7 +150,7 @@
                     app:itemValue="..."
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/node_ip"/>
+                    app:layout_constraintTop_toBottomOf="@+id/node_mac"/>
 
                 <com.sukaiyi.bandwagonvps.view.HostSimpleItemView
                     android:id="@+id/node_root_password"

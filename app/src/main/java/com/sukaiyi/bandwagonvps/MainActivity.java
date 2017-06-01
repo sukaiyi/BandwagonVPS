@@ -289,6 +289,8 @@ public class MainActivity extends AppCompatActivity implements BaseQuickAdapter.
                     case R.id.menu_popup_modify:
                         modifyData(position, mHostListAdapter.getData().get(position));
                         break;
+                    default:
+                        break;
                 }
                 return true;
             }

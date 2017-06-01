@@ -15,6 +15,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.github.clans.fab.FloatingActionButton;
@@ -69,6 +70,8 @@ public class HostDetailActivity extends AppCompatActivity implements SwipeRefres
     HostSimpleItemView mHostOS;
     @BindView(R.id.node_ip)
     HostSimpleItemView mHostIP;
+    @BindView(R.id.node_mac)
+    HostSimpleItemView mNodeMac;
     @BindView(R.id.node_ssh_port)
     HostSimpleItemView mHostSSHPort;
     @BindView(R.id.node_root_password)
@@ -90,6 +93,8 @@ public class HostDetailActivity extends AppCompatActivity implements SwipeRefres
     FloatingActionButton mActionButtonRestart;
     @BindView(R.id.action_button_kill)
     FloatingActionButton mActionButtonKill;
+    @BindView(R.id.action_button_shell)
+    FloatingActionButton mActionButtonShell;
     @BindView(R.id.menu_vertical)
     FloatingActionMenu mFloatingActionVerticalMenu;
 
@@ -111,7 +116,6 @@ public class HostDetailActivity extends AppCompatActivity implements SwipeRefres
         loadCache();
         onRefresh();
         mSwipeRefreshLayout.setOnRefreshListener(this);
-
     }
 
     private void loadCache() {
@@ -137,7 +141,7 @@ public class HostDetailActivity extends AppCompatActivity implements SwipeRefres
     }
 
     private void bindView() {
-        if(mInfo.getError()!=0){
+        if (mInfo.getError() != 0) {
             return;
         }
         mHostNameView.setText(mInfo.getHostname());
@@ -157,18 +161,26 @@ public class HostDetailActivity extends AppCompatActivity implements SwipeRefres
         if (sb.length() > 0) sb.deleteCharAt(sb.length() - 1);
         mHostIP.setValue(sb.toString());
         mHostSSHPort.setValue(mInfo.getSsh_port() + "");
-        mHostStatus.setValue(mInfo.getVz_status().getStatus());
-        mHostCpu.setValue(mInfo.getVz_status().getNproc() +
-                " processes LA:" + mInfo.getVz_status().getLoad_average());
-
         mBandwidthUsage.setValue(Switch.b2Any(mInfo.getData_counter()) + "/" + Switch.b2Any(mInfo.getPlan_monthly_data()));
         mBandwidthUsage.setProgress((int) (mInfo.getData_counter() * 100 / mInfo.getPlan_monthly_data()));
         mBandwidthUsage.setTips("Reset:" + new Date(mInfo.getData_next_reset() * 1000l).toString());
-        String ramUsage = mInfo.getVz_status().getKmemsize();
-        if (ramUsage.equals("-")) {
-            ramUsage = "0";
+
+        if (mInfo.getVm_type().equals("ovz")) {
+            mHostStatus.setValue(mInfo.getVz_status().getStatus());
+            mHostCpu.setValue(mInfo.getVz_status().getNproc() +
+                    " processes LA:" + mInfo.getVz_status().getLoad_average());
+            String ramUsage = mInfo.getVz_status().getKmemsize();
+            if (ramUsage.equals("-")) {
+                ramUsage = "0";
+            }
+            mRamUsage.setValue(Switch.b2Any(Integer.parseInt(ramUsage)) + "/" + Switch.b2Any(mInfo.getPlan_ram()));
+            mNodeMac.setVisibility(View.GONE);
+        } else if (mInfo.getVm_type().equals("kvm")) {
+            mHostStatus.setValue(mInfo.getVe_status());
+            mNodeMac.setValue(mInfo.getVe_mac1());
+            mHostCpu.setVisibility(View.GONE);
+            mRamUsage.setVisibility(View.GONE);
         }
-        mRamUsage.setValue(Switch.b2Any(Integer.parseInt(ramUsage)) + "/" + Switch.b2Any(mInfo.getPlan_ram()));
     }
 
     private void apiCall(String api, JsonHttpResponseHandler handler) {
@@ -190,6 +202,9 @@ public class HostDetailActivity extends AppCompatActivity implements SwipeRefres
                 mSwipeRefreshLayout.setRefreshing(false);
                 if (info.getError() == 0) {
                     mInfo = info;
+                    mHost.setName(mInfo.getHostname());
+                    mHost.setPlan(mInfo.getPlan());
+                    mHost.setEmail(mInfo.getEmail());
                     bindView();
                 } else {
                     ErrorMessage msg = gson.fromJson(response.toString(), ErrorMessage.class);
@@ -217,7 +232,55 @@ public class HostDetailActivity extends AppCompatActivity implements SwipeRefres
 
     @OnClick(R.id.header)
     public void onHeaderClick() {
+        if (mMaryPopup == null) {
+            mMaryPopup = MaryPopup.with(this)
+                    .cancellable(true)
+                    .blackOverlayColor(Color.parseColor("#DD444444"))
+                    .backgroundColor(Color.parseColor("#EFF4F5"))
+                    .center(true);
+        }
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_host_header, null, false);
+        final EditText hostNameView = (EditText) view.findViewById(R.id.host_name_view);
+        hostNameView.setEnabled(false);
+        TextView veidView = (TextView) view.findViewById(R.id.host_veid_view);
+        TextView planView = (TextView) view.findViewById(R.id.host_plan_view);
+        TextView emailView = (TextView) view.findViewById(R.id.host_email_view);
+        final TextView changeHostNameBtn = (TextView) view.findViewById(R.id.change_host_name);
+        hostNameView.setText(mHost.getName());
+        veidView.setText(mHost.getID());
+        planView.setText(mHost.getPlan());
+        emailView.setText(mHost.getEmail());
 
+        if(mInfo.getVm_type().equals("kvm")){
+            changeHostNameBtn.setEnabled(false);
+            changeHostNameBtn.setVisibility(View.GONE);
+        }
+        changeHostNameBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TextView view = (TextView) v;
+                if (!"确认".equals(view.getText().toString())) {
+                    hostNameView.setEnabled(true);
+                    changeHostNameBtn.setText("确认");
+                } else {
+                    RequestParams params = new RequestParams();
+                    params.put("veid", mHost.getID());
+                    params.put("api_key", mHost.getApiKey());
+                    params.put("newHostname", hostNameView.getText().toString());
+                    ApiGate.get("setHostname", params, new JsonHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                            super.onSuccess(statusCode, headers, response);
+                            hostNameView.setEnabled(false);
+                            changeHostNameBtn.setText("更改主机名");
+                        }
+                    });
+                }
+            }
+        });
+        mMaryPopup.content(view)
+                .from(mHeader)
+                .show();
     }
 
     @OnClick({
@@ -225,24 +288,25 @@ public class HostDetailActivity extends AppCompatActivity implements SwipeRefres
             R.id.node_ip,
             R.id.node_status,
             R.id.node_ssh_port,
-            R.id.node_cpu
+            R.id.node_cpu,
+            R.id.node_mac
     })
     public void onHostNormalItemClick(View v) {
-        if(mMaryPopup==null){
+        if (mMaryPopup == null) {
             mMaryPopup = MaryPopup.with(this)
                     .cancellable(true)
                     .blackOverlayColor(Color.parseColor("#DD444444"))
                     .backgroundColor(Color.parseColor("#EFF4F5"))
                     .center(true);
         }
-        View view = LayoutInflater.from(this).inflate(R.layout.dialog_host_item_detail,null,false);
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_host_item_detail, null, false);
         TextView titleView = (TextView) view.findViewById(R.id.title);
         final TextView valueView = (TextView) view.findViewById(R.id.value);
         valueView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Utils.copyToClipboard(HostDetailActivity.this,valueView.getText().toString());
-                Snackbar.make(v,valueView.getText().toString()+" 已复制到剪切板",Snackbar.LENGTH_SHORT).show();
+                Utils.copyToClipboard(HostDetailActivity.this, valueView.getText().toString());
+                Snackbar.make(v, valueView.getText().toString() + " 已复制到剪切板", Snackbar.LENGTH_SHORT).show();
             }
         });
         HostSimpleItemView clickedView = (HostSimpleItemView) v;
@@ -255,22 +319,22 @@ public class HostDetailActivity extends AppCompatActivity implements SwipeRefres
 
     @OnClick(R.id.node_os)
     public void onHostOSClick() {
-        if(mMaryPopup==null){
+        if (mMaryPopup == null) {
             mMaryPopup = MaryPopup.with(this)
                     .cancellable(true)
                     .blackOverlayColor(Color.parseColor("#DD444444"))
                     .backgroundColor(Color.parseColor("#EFF4F5"))
                     .center(true);
         }
-        View view = LayoutInflater.from(this).inflate(R.layout.dialog_host_item_detail_clickable,null,false);
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_host_item_detail_clickable, null, false);
         TextView titleView = (TextView) view.findViewById(R.id.title);
         TextView tipsView = (TextView) view.findViewById(R.id.tips);
         final TextView valueView = (TextView) view.findViewById(R.id.value);
         valueView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Utils.copyToClipboard(HostDetailActivity.this,valueView.getText().toString());
-                Snackbar.make(v,valueView.getText().toString()+" 已复制到剪切板",Snackbar.LENGTH_SHORT).show();
+                Utils.copyToClipboard(HostDetailActivity.this, valueView.getText().toString());
+                Snackbar.make(v, valueView.getText().toString() + " 已复制到剪切板", Snackbar.LENGTH_SHORT).show();
             }
         });
         TextView buttonView = (TextView) view.findViewById(R.id.button);
@@ -301,14 +365,14 @@ public class HostDetailActivity extends AppCompatActivity implements SwipeRefres
 
     @OnClick(R.id.node_root_password)
     public void onRootPasswordClick() {
-        if(mMaryPopup==null){
+        if (mMaryPopup == null) {
             mMaryPopup = MaryPopup.with(this)
                     .cancellable(true)
                     .blackOverlayColor(Color.parseColor("#DD444444"))
                     .backgroundColor(Color.parseColor("#EFF4F5"))
                     .center(true);
         }
-        View view = LayoutInflater.from(this).inflate(R.layout.dialog_host_item_detail_clickable,null,false);
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_host_item_detail_clickable, null, false);
         TextView titleView = (TextView) view.findViewById(R.id.title);
         TextView tipsView = (TextView) view.findViewById(R.id.tips);
         final TextView valueView = (TextView) view.findViewById(R.id.value);
@@ -316,8 +380,8 @@ public class HostDetailActivity extends AppCompatActivity implements SwipeRefres
         valueView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Utils.copyToClipboard(HostDetailActivity.this,valueView.getText().toString());
-                Snackbar.make(v,valueView.getText().toString()+" 已复制到剪切板",Snackbar.LENGTH_SHORT).show();
+                Utils.copyToClipboard(HostDetailActivity.this, valueView.getText().toString());
+                Snackbar.make(v, valueView.getText().toString() + " 已复制到剪切板", Snackbar.LENGTH_SHORT).show();
             }
         });
         titleView.setText(mHostRootPassword.getTitle());
@@ -327,15 +391,15 @@ public class HostDetailActivity extends AppCompatActivity implements SwipeRefres
         buttonView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                apiCall("resetRootPassword",new JsonHttpResponseHandler(){
+                apiCall("resetRootPassword", new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                         super.onSuccess(statusCode, headers, response);
                         Gson gson = new Gson();
                         Password psd = gson.fromJson(response.toString(), Password.class);
-                        if(psd.getError()==0){
+                        if (psd.getError() == 0) {
                             valueView.setText(psd.getPassword());
-                        }else{
+                        } else {
                             ErrorMessage msg = gson.fromJson(response.toString(), ErrorMessage.class);
                             snack(msg);
                         }
@@ -344,7 +408,7 @@ public class HostDetailActivity extends AppCompatActivity implements SwipeRefres
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                         super.onFailure(statusCode, headers, responseString, throwable);
-                        snack(new ErrorMessage(statusCode,responseString));
+                        snack(new ErrorMessage(statusCode, responseString));
                     }
 
                 });
@@ -375,7 +439,7 @@ public class HostDetailActivity extends AppCompatActivity implements SwipeRefres
     public void onBackPressed() {
         if (mFloatingActionVerticalMenu.isOpened()) {
             mFloatingActionVerticalMenu.close(true);
-        } else if(mMaryPopup!=null && mMaryPopup.isOpened()){
+        } else if (mMaryPopup != null && mMaryPopup.isOpened()) {
             mMaryPopup.close(true);
         } else {
             super.onBackPressed();
@@ -405,7 +469,8 @@ public class HostDetailActivity extends AppCompatActivity implements SwipeRefres
             R.id.action_button_start,
             R.id.action_button_stop,
             R.id.action_button_restart,
-            R.id.action_button_kill
+            R.id.action_button_kill,
+            R.id.action_button_shell
     })
     public void onClick(View view) {
         mFloatingActionVerticalMenu.close(true);
@@ -432,6 +497,14 @@ public class HostDetailActivity extends AppCompatActivity implements SwipeRefres
                 break;
             case R.id.action_button_kill:
                 apiCall("kill", handler);
+                break;
+            case R.id.action_button_shell:
+//                Intent intent = new Intent(HostDetailActivity.this, ShellActivity.class);
+//                intent.putExtra("host", mHost);
+//                startActivity(intent);
+                Snackbar.make(mFloatingActionVerticalMenu,
+                        "正在开发...",
+                        Snackbar.LENGTH_SHORT).show();
                 break;
         }
     }

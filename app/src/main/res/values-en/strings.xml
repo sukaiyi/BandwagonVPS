@@ -11,4 +11,5 @@
     <string name="str_host_ssh_port">SSH Port</string>
     <string name="str_host_status">Host Status</string>
     <string name="str_host_root_password">Root Password</string>
+    <string name="str_host_mac">MAC Address</string>
 </resources>

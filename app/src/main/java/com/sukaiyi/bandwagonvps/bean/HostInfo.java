@@ -27,6 +27,44 @@ public class HostInfo implements java.io.Serializable {
     private String email;
     private int error;
 
+    private String ve_disk_quota_gb;
+    private String ve_status;
+    private int ve_used_disk_space_b;
+    private String ve_mac1;
+
+    public String getVe_disk_quota_gb() {
+        return this.ve_disk_quota_gb;
+    }
+
+    public void setVe_disk_quota_gb(String ve_disk_quota_gb) {
+        this.ve_disk_quota_gb = ve_disk_quota_gb;
+    }
+
+    public String getVe_status() {
+        return this.ve_status;
+    }
+
+    public void setVe_status(String ve_status) {
+        this.ve_status = ve_status;
+    }
+
+
+    public int getVe_used_disk_space_b() {
+        return this.ve_used_disk_space_b;
+    }
+
+    public void setVe_used_disk_space_b(int ve_used_disk_space_b) {
+        this.ve_used_disk_space_b = ve_used_disk_space_b;
+    }
+
+    public String getVe_mac1() {
+        return this.ve_mac1;
+    }
+
+    public void setVe_mac1(String ve_mac1) {
+        this.ve_mac1 = ve_mac1;
+    }
+
     public int getSsh_port() {
         return this.ssh_port;
     }

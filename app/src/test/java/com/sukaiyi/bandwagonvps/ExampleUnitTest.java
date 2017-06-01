@@ -1,10 +1,8 @@
 package com.sukaiyi.bandwagonvps;
 
-import com.google.gson.Gson;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.orhanobut.logger.Logger;
-import com.sukaiyi.bandwagonvps.bean.HostInfo;
 import com.sukaiyi.bandwagonvps.net.ApiGate;
 import com.sukaiyi.bandwagonvps.utils.Switch;
 
@@ -12,8 +10,6 @@ import org.json.JSONObject;
 import org.junit.Test;
 
 import cz.msebera.android.httpclient.Header;
-
-import static org.junit.Assert.*;
 
 /**
  * Example local unit dialog_confirm_change_os, which will execute on the development machine (host).
