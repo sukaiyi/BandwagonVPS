@@ -10,7 +10,7 @@ public class HostInfo implements java.io.Serializable {
     private String[] ip_addresses;
     private boolean location_ipv6_ready;
     private String is_cpu_throttled;
-    private int plan_ram;
+    private long plan_ram;
     private boolean suspended;
     private long data_counter;
     private String vm_type;
@@ -21,7 +21,7 @@ public class HostInfo implements java.io.Serializable {
     private long plan_monthly_data;
     private boolean rdns_api_available;
     private String node_alias;
-    private int plan_swap;
+    private long plan_swap;
     private long plan_disk;
     private String plan;
     private String email;
@@ -129,11 +129,11 @@ public class HostInfo implements java.io.Serializable {
         this.is_cpu_throttled = is_cpu_throttled;
     }
 
-    public int getPlan_ram() {
+    public long getPlan_ram() {
         return this.plan_ram;
     }
 
-    public void setPlan_ram(int plan_ram) {
+    public void setPlan_ram(long plan_ram) {
         this.plan_ram = plan_ram;
     }
 
@@ -217,11 +217,11 @@ public class HostInfo implements java.io.Serializable {
         this.node_alias = node_alias;
     }
 
-    public int getPlan_swap() {
+    public long getPlan_swap() {
         return this.plan_swap;
     }
 
-    public void setPlan_swap(int plan_swap) {
+    public void setPlan_swap(long plan_swap) {
         this.plan_swap = plan_swap;
     }
 

@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.github.clans.fab.FloatingActionButton;
@@ -28,6 +29,7 @@ import com.orhanobut.logger.Logger;
 import com.sukaiyi.bandwagonvps.bean.ErrorMessage;
 import com.sukaiyi.bandwagonvps.bean.Host;
 import com.sukaiyi.bandwagonvps.bean.HostInfo;
+import com.sukaiyi.bandwagonvps.bean.HostInfoParser;
 import com.sukaiyi.bandwagonvps.bean.Password;
 import com.sukaiyi.bandwagonvps.net.ApiGate;
 import com.sukaiyi.bandwagonvps.utils.Switch;
@@ -36,8 +38,6 @@ import com.sukaiyi.bandwagonvps.view.HostProgressItemView;
 import com.sukaiyi.bandwagonvps.view.HostSimpleItemView;
 
 import org.json.JSONObject;
-
-import java.sql.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -84,6 +84,10 @@ public class HostDetailActivity extends AppCompatActivity implements SwipeRefres
     HostProgressItemView mBandwidthUsage;
     @BindView(R.id.ram_usage)
     HostProgressItemView mRamUsage;
+    @BindView(R.id.swap_usage)
+    HostProgressItemView mSwapUsage;
+    @BindView(R.id.disk_usage)
+    HostProgressItemView mDiskUsage;
 
     @BindView(R.id.action_button_start)
     FloatingActionButton mActionButtonStart;
@@ -144,42 +148,53 @@ public class HostDetailActivity extends AppCompatActivity implements SwipeRefres
         if (mInfo.getError() != 0) {
             return;
         }
-        mHostNameView.setText(mInfo.getHostname());
+        HostInfoParser parser = new HostInfoParser(mInfo);
+        mHostNameView.setText(parser.getHostname());
         mHostIDView.setText(mHost.getID());
-        mPlanView.setText(mInfo.getPlan());
-        mEmailView.setText(mInfo.getEmail());
+        mPlanView.setText(parser.getPlan());
+        mEmailView.setText(parser.getEmail());
 
-        mHostLocation.setValue(mInfo.getNode_location());
-        mHostOS.setValue(mInfo.getOs());
+        mHostLocation.setValue(parser.getNode_location());
+        mHostOS.setValue(parser.getOs());
+        mHostIP.setValue(parser.getIp_addresses());
+        mHostSSHPort.setValue(parser.getSsh_port() + "");
+        mBandwidthUsage.setValue(Switch.b2Any(parser.getData_counter()) +
+                "/" +
+                Switch.b2Any(parser.getPlan_monthly_data()));
+        mBandwidthUsage.setTotal(parser.getPlan_monthly_data());
+        mBandwidthUsage.setProgress(parser.getData_counter());
+        mBandwidthUsage.setTips("Reset:" + parser.getData_next_reset());
 
-        String[] ips = mInfo.getIp_addresses();
-        StringBuilder sb = new StringBuilder();
-        for (String ip : ips) {
-            sb.append(ip);
-            sb.append("\n");
-        }
-        if (sb.length() > 0) sb.deleteCharAt(sb.length() - 1);
-        mHostIP.setValue(sb.toString());
-        mHostSSHPort.setValue(mInfo.getSsh_port() + "");
-        mBandwidthUsage.setValue(Switch.b2Any(mInfo.getData_counter()) + "/" + Switch.b2Any(mInfo.getPlan_monthly_data()));
-        mBandwidthUsage.setProgress((int) (mInfo.getData_counter() * 100 / mInfo.getPlan_monthly_data()));
-        mBandwidthUsage.setTips("Reset:" + new Date(mInfo.getData_next_reset() * 1000l).toString());
+        mHostStatus.setValue(parser.getStatus());
 
-        if (mInfo.getVm_type().equals("ovz")) {
-            mHostStatus.setValue(mInfo.getVz_status().getStatus());
-            mHostCpu.setValue(mInfo.getVz_status().getNproc() +
-                    " processes LA:" + mInfo.getVz_status().getLoad_average());
-            String ramUsage = mInfo.getVz_status().getKmemsize();
-            if (ramUsage.equals("-")) {
-                ramUsage = "0";
-            }
-            mRamUsage.setValue(Switch.b2Any(Integer.parseInt(ramUsage)) + "/" + Switch.b2Any(mInfo.getPlan_ram()));
+        if (parser.getVm_type().equals("ovz")) {
+            mHostCpu.setValue(parser.getCpu_load());
+            mRamUsage.setValue(Switch.b2Any(parser.getUsage_ram()) +
+                    "/" +
+                    Switch.b2Any(parser.getPlan_ram()));
+            mRamUsage.setTotal(parser.getPlan_ram());
+            mRamUsage.setProgress(parser.getUsage_ram());
+
+            mSwapUsage.setValue(Switch.b2Any(parser.getUsage_swap()) +
+                    "/" +
+                    Switch.b2Any(parser.getPlan_swap()));
+            mSwapUsage.setTotal(parser.getPlan_swap());
+            mSwapUsage.setProgress(parser.getUsage_swap());
+
+            mDiskUsage.setValue(Switch.b2Any(parser.getUsage_disk()) +
+                    "/" +
+                    Switch.b2Any(parser.getPlan_disk()));
+            mDiskUsage.setTotal(parser.getPlan_disk());
+            mDiskUsage.setProgress(parser.getUsage_disk());
+
             mNodeMac.setVisibility(View.GONE);
-        } else if (mInfo.getVm_type().equals("kvm")) {
-            mHostStatus.setValue(mInfo.getVe_status());
-            mNodeMac.setValue(mInfo.getVe_mac1());
+        } else if (parser.getVm_type().equals("kvm")) {
+            mNodeMac.setValue(parser.getVe_mac1());
+
             mHostCpu.setVisibility(View.GONE);
             mRamUsage.setVisibility(View.GONE);
+            mSwapUsage.setVisibility(View.GONE);
+            mDiskUsage.setVisibility(View.GONE);
         }
     }
 
@@ -251,7 +266,7 @@ public class HostDetailActivity extends AppCompatActivity implements SwipeRefres
         planView.setText(mHost.getPlan());
         emailView.setText(mHost.getEmail());
 
-        if(mInfo.getVm_type().equals("kvm")){
+        if (mInfo.getVm_type().equals("kvm")) {
             changeHostNameBtn.setEnabled(false);
             changeHostNameBtn.setVisibility(View.GONE);
         }
@@ -427,12 +442,37 @@ public class HostDetailActivity extends AppCompatActivity implements SwipeRefres
         ApiGate.cancelAllRequests();
     }
 
-    @OnClick(R.id.bandwidth_usage)
-    public void onHostBandwidthUsageClick() {
-    }
+    @OnClick({
+            R.id.bandwidth_usage,
+            R.id.ram_usage,
+            R.id.disk_usage,
+            R.id.swap_usage
+    })
+    public void onProgressItemClick(View v) {
+        if (mMaryPopup == null) {
+            mMaryPopup = MaryPopup.with(this)
+                    .cancellable(true)
+                    .blackOverlayColor(Color.parseColor("#DD444444"))
+                    .backgroundColor(Color.parseColor("#EFF4F5"))
+                    .center(true);
+        }
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_host_progress_item_detail, null, false);
+        TextView titleView = (TextView) view.findViewById(R.id.title);
+        ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
+        TextView remainView = (TextView) view.findViewById(R.id.remain);
+        TextView usageView = (TextView) view.findViewById(R.id.usage);
+        TextView totalView = (TextView) view.findViewById(R.id.total);
+        HostProgressItemView itemView = (HostProgressItemView) v;
 
-    @OnClick(R.id.ram_usage)
-    public void onHostRAMUsageClick() {
+        titleView.setText(itemView.getTitle());
+        progressBar.setProgress((int) (itemView.getProgress() * 100 / itemView.getTotal()));
+        remainView.setText(Switch.b2Any(itemView.getTotal() - itemView.getProgress()));
+        usageView.setText(Switch.b2Any(itemView.getProgress()));
+        totalView.setText(Switch.b2Any(itemView.getTotal()));
+
+        mMaryPopup.content(view)
+                .from(v)
+                .show();
     }
 
     @Override
@@ -499,12 +539,9 @@ public class HostDetailActivity extends AppCompatActivity implements SwipeRefres
                 apiCall("kill", handler);
                 break;
             case R.id.action_button_shell:
-//                Intent intent = new Intent(HostDetailActivity.this, ShellActivity.class);
-//                intent.putExtra("host", mHost);
-//                startActivity(intent);
-                Snackbar.make(mFloatingActionVerticalMenu,
-                        "正在开发...",
-                        Snackbar.LENGTH_SHORT).show();
+                Intent intent = new Intent(HostDetailActivity.this, ShellActivity.class);
+                intent.putExtra("host", mHost);
+                startActivity(intent);
                 break;
         }
     }

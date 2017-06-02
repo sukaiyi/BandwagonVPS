@@ -12,4 +12,9 @@
     <string name="str_host_status">Host Status</string>
     <string name="str_host_root_password">Root Password</string>
     <string name="str_host_mac">MAC Address</string>
+    <string name="str_host_disk">Disk Usage</string>
+    <string name="str_host_swap">SWAP Usage</string>
+    <string name="str_remain">Remain: </string>
+    <string name="str_usage">Usage: </string>
+    <string name="str_total">Total: </string>
 </resources>

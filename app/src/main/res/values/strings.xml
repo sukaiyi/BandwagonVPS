@@ -12,4 +12,9 @@
     <string name="str_bandwidth_usage">流量使用情况</string>
     <string name="str_host_ram">主机内存</string>
     <string name="str_host_mac">MAC地址</string>
+    <string name="str_host_disk">主机存储空间</string>
+    <string name="str_host_swap">虚拟内存</string>
+    <string name="str_remain">剩余：</string>
+    <string name="str_usage">已用：</string>
+    <string name="str_total">总共：</string>
 </resources>

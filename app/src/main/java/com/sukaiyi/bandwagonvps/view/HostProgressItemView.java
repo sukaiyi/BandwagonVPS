@@ -30,27 +30,30 @@ public class HostProgressItemView extends LinearLayout {
     private String mValue;
     private String mTips;
 
+    private long mTotal;
+    private long mProgress;
+
     public HostProgressItemView(Context context) {
         super(context);
-        getAttrs(context,null);
+        getAttrs(context, null);
         initView(context);
     }
 
     public HostProgressItemView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        getAttrs(context,attrs);
+        getAttrs(context, attrs);
         initView(context);
     }
 
     public HostProgressItemView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        getAttrs(context,attrs);
+        getAttrs(context, attrs);
         initView(context);
     }
 
     public HostProgressItemView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        getAttrs(context,attrs);
+        getAttrs(context, attrs);
         initView(context);
     }
 
@@ -62,16 +65,16 @@ public class HostProgressItemView extends LinearLayout {
         ta.recycle();
     }
 
-    private void initView(Context context){
+    private void initView(Context context) {
         mTitleView = new TextView(context);
         mValueView = new TextView(context);
         mValueView.setTextColor(Color.BLACK);
         mValueView.setTextSize(15.0f);
-        mProgressBar =  new ProgressBar(context, null, android.R.attr.progressBarStyleHorizontal);
+        mProgressBar = new ProgressBar(context, null, android.R.attr.progressBarStyleHorizontal);
         mProgressBar.setMinimumHeight(2);
-        mProgressBar.setBackgroundColor(Color.argb(0,0,0,0));
+        mProgressBar.setBackgroundColor(Color.argb(0, 0, 0, 0));
         mTipsView = new TextView(context);
-//        mTipsView.setVisibility(View.GONE);
+        mTipsView.setVisibility(View.GONE);
 
         this.setOrientation(LinearLayout.VERTICAL);
         this.addView(mTitleView);
@@ -84,27 +87,58 @@ public class HostProgressItemView extends LinearLayout {
         mValueView.setText(mValue);
     }
 
-    public void setTips(String tips){
+    public void setTips(String tips) {
         this.mTips = tips;
-        if(TextUtils.isEmpty(tips)){
+        if (TextUtils.isEmpty(tips)) {
             mTipsView.setVisibility(View.GONE);
-        }else{
+        } else {
             mTipsView.setVisibility(View.VISIBLE);
         }
         mTipsView.setText(tips);
     }
 
-    public void setTitle(String title){
+    public void setTitle(String title) {
         this.mTitle = title;
         mTitleView.setText(title);
     }
 
-    public void setValue(String value){
+    public void setValue(String value) {
         this.mValue = value;
         mValueView.setText(value);
     }
 
-    public void setProgress(int progress){
+    public void setProgress(int progress) {
         mProgressBar.setProgress(progress);
     }
+
+    public long getTotal() {
+        return mTotal;
+    }
+
+    public void setTotal(long total) {
+        mTotal = total;
+    }
+
+    public long getProgress() {
+        return mProgress;
+    }
+
+    public void setProgress(long progress) {
+        mProgress = progress;
+        mProgressBar.setMax(100);
+        mProgressBar.setProgress((int) (progress * 100 / mTotal));
+    }
+
+    public String getTitle() {
+        return mTitle;
+    }
+
+    public String getValue() {
+        return mValue;
+    }
+
+    public String getTips() {
+        return mTips;
+    }
+
 }

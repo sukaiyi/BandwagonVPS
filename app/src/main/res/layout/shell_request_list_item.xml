@@ -26,10 +26,12 @@
         android:textColor="@android:color/white"/>
 
     <EditText
-        android:layout_height="wrap_content"
         android:id="@+id/command_editor"
         android:layout_width="0dp"
+        style="@android:style/TextAppearance.DeviceDefault.Small"
+        android:layout_height="wrap_content"
         android:layout_weight="1.0"
         android:background="#00000000"
+        android:imeOptions="actionSend"
         android:textColor="@android:color/white"/>
 </LinearLayout>

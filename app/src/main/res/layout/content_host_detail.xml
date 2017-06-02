@@ -212,6 +212,30 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/bandwidth_usage"/>
+
+                <com.sukaiyi.bandwagonvps.view.HostProgressItemView
+                    android:id="@+id/swap_usage"
+                    android:layout_width="345dp"
+                    android:layout_height="wrap_content"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:padding="10dp"
+                    app:itemTitle="@string/str_host_swap"
+                    app:itemValue="..."
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/ram_usage"/>
+
+                <com.sukaiyi.bandwagonvps.view.HostProgressItemView
+                    android:id="@+id/disk_usage"
+                    android:layout_width="345dp"
+                    android:layout_height="wrap_content"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:padding="10dp"
+                    app:itemTitle="@string/str_host_disk"
+                    app:itemValue="..."
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/swap_usage"/>
             </android.support.constraint.ConstraintLayout>
 
         </android.support.v7.widget.CardView>

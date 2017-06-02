@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 
 import com.google.gson.Gson;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -16,6 +14,7 @@ import com.sukaiyi.bandwagonvps.adapter.ShellListAdapter;
 import com.sukaiyi.bandwagonvps.bean.ErrorMessage;
 import com.sukaiyi.bandwagonvps.bean.Host;
 import com.sukaiyi.bandwagonvps.bean.Shell;
+import com.sukaiyi.bandwagonvps.interfaces.ShellListener;
 import com.sukaiyi.bandwagonvps.net.ApiGate;
 
 import org.json.JSONObject;
@@ -26,7 +25,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
 
-public class ShellActivity extends AppCompatActivity implements TextWatcher {
+public class ShellActivity extends AppCompatActivity implements ShellListener {
 
     @BindView(R.id.shell_command_list)
     RecyclerView mShellCommandList;
@@ -52,11 +51,6 @@ public class ShellActivity extends AppCompatActivity implements TextWatcher {
         mShellListAdapter.addData(new Shell(Shell.TYPE_REQUEST, "", "/", false));
     }
 
-    private String getCommand(String str) {
-        int index = str.lastIndexOf('#');
-        return str.substring(index + 1, str.length() - 1);
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -74,22 +68,23 @@ public class ShellActivity extends AppCompatActivity implements TextWatcher {
                 super.onSuccess(statusCode, headers, response);
                 Logger.d(response.toString());
                 ErrorMessage msg = new Gson().fromJson(response.toString(), ErrorMessage.class);
+                Shell shell = new Shell(Shell.TYPE_RESPONSE, msg.getMessage().trim(), "", false);
+                mShellListAdapter.addData(shell);
+                mShellListAdapter.addData(new Shell(Shell.TYPE_REQUEST, "", "/", false));
             }
         });
     }
 
     @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-    }
-
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-    }
-
-    @Override
-    public void afterTextChanged(Editable s) {
-
+    public void onEnter(String input) {
+        if(input.equals("clear")){
+            mShellListAdapter.getData().clear();
+            mShellListAdapter.addData(new Shell(Shell.TYPE_REQUEST, "", "/", false));
+            return;
+        }
+        exec(input);
+        mShellListAdapter.getData().get(mShellListAdapter.getItemCount() - 1).setOver(true);
+        mShellListAdapter.getData().get(mShellListAdapter.getItemCount() - 1).setMessage(input);
+        mShellListAdapter.notifyDataSetChanged();
     }
 }
