@@ -1,10 +1,9 @@
 package com.sukaiyi.bandwagonvps.adapter;
 
 import android.support.annotation.NonNull;
-import android.view.KeyEvent;
-import android.view.inputmethod.EditorInfo;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -18,7 +17,7 @@ import java.util.List;
 public class ShellListAdapter extends BaseMultiItemQuickAdapter<Shell, BaseViewHolder> {
 
     private ShellListener mShellListener;
-    private TextView.OnEditorActionListener mOnEditorActionListener;
+    private TextWatcher mTextWatcher;
 
     public ShellListAdapter(ShellListener listener, List<Shell> messageWrapper) {
         super(messageWrapper);
@@ -26,18 +25,22 @@ public class ShellListAdapter extends BaseMultiItemQuickAdapter<Shell, BaseViewH
         addItemType(Shell.TYPE_REQUEST, R.layout.shell_request_list_item);
         mShellListener = listener;
 
-        mOnEditorActionListener = new TextView.OnEditorActionListener() {
+        mTextWatcher = new TextWatcher() {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEND ||
-                        actionId == EditorInfo.IME_ACTION_DONE ||
-                        (event != null &&
-                                KeyEvent.KEYCODE_ENTER == event.getKeyCode() &&
-                                KeyEvent.ACTION_DOWN == event.getAction())) {
-                    mShellListener.onEnter(v.getText().toString());
-                    return true;
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().contains("\n")) {
+                    mShellListener.onEnter(s.toString().replaceAll("\n",""));
                 }
-                return false;
             }
         };
     }
@@ -50,11 +53,11 @@ public class ShellListAdapter extends BaseMultiItemQuickAdapter<Shell, BaseViewH
                 if (shell.isOver()) {
                     viewHolder.setText(R.id.command_editor, shell.getMessage());
                     viewHolder.getView(R.id.command_editor).setEnabled(false);
-                    ((EditText) viewHolder.getView(R.id.command_editor)).setOnEditorActionListener(null);
+                    ((EditText) viewHolder.getView(R.id.command_editor)).removeTextChangedListener(mTextWatcher);
                 } else {
                     viewHolder.setText(R.id.command_editor, shell.getMessage());
                     viewHolder.getView(R.id.command_editor).setEnabled(true);
-                    ((EditText) viewHolder.getView(R.id.command_editor)).setOnEditorActionListener(mOnEditorActionListener);
+                    ((EditText) viewHolder.getView(R.id.command_editor)).addTextChangedListener(mTextWatcher);
                     viewHolder.getView(R.id.command_editor).requestFocus();
                 }
                 break;
