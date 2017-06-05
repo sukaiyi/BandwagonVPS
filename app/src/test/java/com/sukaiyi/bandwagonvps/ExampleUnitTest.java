@@ -9,6 +9,9 @@ import com.sukaiyi.bandwagonvps.utils.Switch;
 import org.json.JSONObject;
 import org.junit.Test;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 import cz.msebera.android.httpclient.Header;
 
 /**
@@ -34,5 +37,16 @@ public class ExampleUnitTest {
                 Logger.d(response);
             }
         });
+    }
+
+    @Test
+    public void test(){
+        SimpleDateFormat format = new SimpleDateFormat();
+        format.setLenient(true);
+        try {
+            System.out.println(format.parse("07/10/96 4:5 PM,PDT"));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 }

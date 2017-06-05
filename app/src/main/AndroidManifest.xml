@@ -29,6 +29,10 @@
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".ShellActivity">
         </activity>
+        <activity android:name=".FileManagerActivity">
+        </activity>
+        <activity android:name=".TextFileActivity">
+        </activity>
     </application>
 
 </manifest>
