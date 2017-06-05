@@ -168,7 +168,9 @@ public class FileManagerActivity extends AppCompatActivity implements BaseQuickA
             super.onBackPressed();
         } else {
             mPath.pop();
-            refreshFileList();
+            if(!getFileListFromCache()){
+                refreshFileList();
+            }
         }
     }
 

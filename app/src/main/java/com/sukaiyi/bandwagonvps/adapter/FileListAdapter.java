@@ -21,6 +21,8 @@ public class FileListAdapter extends BaseQuickAdapter<File, BaseViewHolder> {
     public FileListAdapter(Context context, List<File> data) {
         super(R.layout.file_list_item, data);
         mContext = context;
+        this.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
+        this.isFirstOnly(false);
     }
 
     @Override
@@ -31,7 +33,7 @@ public class FileListAdapter extends BaseQuickAdapter<File, BaseViewHolder> {
         ImageView iconView = viewHolder.getView(R.id.file_icon);
         if (item.isDirectory()) {
             iconView.setImageDrawable(ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.ic_folder_cyan_48dp, null));
-            viewHolder.setText(R.id.file_type, "目录");
+            viewHolder.setText(R.id.file_type, mContext.getResources().getString(R.string.str_directory));
         } else if (item.isLink()) {
             iconView.setImageDrawable(ResourcesCompat.getDrawable(mContext.getResources(), R.drawable.ic_link_cyan_48dp, null));
             viewHolder.setText(R.id.file_type, item.getLinkPath());

@@ -249,9 +249,14 @@ public class HostDetailActivity extends AppCompatActivity implements SwipeRefres
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_file_management:
-                Intent intent = new Intent(HostDetailActivity.this, FileManagerActivity.class);
-                intent.putExtra("host",mHost);
-                startActivity(intent);
+                Intent fileManagerIntent = new Intent(HostDetailActivity.this, FileManagerActivity.class);
+                fileManagerIntent.putExtra("host",mHost);
+                startActivity(fileManagerIntent);
+                break;
+            case R.id.menu_snapshots:
+                Intent snapshotIntent = new Intent(HostDetailActivity.this, SnapshotActivity.class);
+                snapshotIntent.putExtra("host",mHost);
+                startActivity(snapshotIntent);
                 break;
             default:
                 break;
@@ -299,9 +304,10 @@ public class HostDetailActivity extends AppCompatActivity implements SwipeRefres
             @Override
             public void onClick(View v) {
                 TextView view = (TextView) v;
-                if (!"确认".equals(view.getText().toString())) {
+                String ok = getResources().getString(R.string.str_ok);
+                if (!ok.equals(view.getText().toString())) {
                     hostNameView.setEnabled(true);
-                    changeHostNameBtn.setText("确认");
+                    changeHostNameBtn.setText(ok);
                 } else {
                     RequestParams params = new RequestParams();
                     params.put("veid", mHost.getID());
@@ -312,7 +318,7 @@ public class HostDetailActivity extends AppCompatActivity implements SwipeRefres
                         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                             super.onSuccess(statusCode, headers, response);
                             hostNameView.setEnabled(false);
-                            changeHostNameBtn.setText("更改主机名");
+                            changeHostNameBtn.setText(getResources().getString(R.string.str_change_host_name));
                         }
                     });
                 }

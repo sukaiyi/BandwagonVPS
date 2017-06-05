@@ -17,4 +17,23 @@
     <string name="str_remain">剩余：</string>
     <string name="str_usage">已用：</string>
     <string name="str_total">总共：</string>
+
+    <string name="str_create_snapshot">创建快照</string>
+    <string name="str_import_snapshot">导入快照</string>
+    <string name="str_snapshot_size">快照大小：</string>
+    <string name="str_snapshot_uncompressed_size">，未压缩大小：</string>
+    <string name="str_md5">MD5:</string>
+    <string name="str_description">描述：</string>
+    <string name="str_available_snapshot">可用快照</string>
+    <string name="str_start">启动</string>
+    <string name="str_stop">停止</string>
+    <string name="str_restart">重新启动</string>
+    <string name="str_force_stop">强制停止</string>
+
+    <string name="str_change_host_name">更改主机名</string>
+    <string name="str_ok">确认</string>
+    <string name="str_directory">目录</string>
+    <string name="str_no_data_tips">没有数据，试试下拉刷新</string>
+
+
 </resources>

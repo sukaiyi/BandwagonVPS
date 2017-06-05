@@ -27,7 +27,10 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <include layout="@layout/content_host_detail"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/snapshot_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
@@ -54,48 +57,21 @@
         app:menu_showShadow="true">
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/action_button_start"
+            android:id="@+id/action_button_create_snapshot"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_play_white_24dp"
             app:fab_colorNormal="#81c784"
-            app:fab_label="@string/str_start"
+            app:fab_label="@string/str_create_snapshot"
             app:fab_size="mini"/>
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/action_button_stop"
+            android:id="@+id/action_button_import_snapshot"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_power_settings_white_24dp"
             app:fab_colorNormal="#ff8a65"
-            app:fab_label="@string/str_stop"
-            app:fab_size="mini"/>
-
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/action_button_restart"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_refresh_white_24dp"
-            app:fab_colorNormal="#1976d2"
-            app:fab_label="@string/str_restart"
-            app:fab_size="mini"/>
-
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/action_button_kill"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_stop_white_24dp"
-            app:fab_colorNormal="#d32f2f"
-            app:fab_label="@string/str_force_stop"
-            app:fab_size="mini"/>
-
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/action_button_shell"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_enter_white_24dp"
-            app:fab_colorNormal="#d32f2f"
-            app:fab_label="Shell"
+            app:fab_label="@string/str_import_snapshot"
             app:fab_size="mini"/>
 
     </com.github.clans.fab.FloatingActionMenu>

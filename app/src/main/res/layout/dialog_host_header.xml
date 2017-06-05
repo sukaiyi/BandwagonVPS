@@ -22,7 +22,6 @@
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:paddingTop="20dp"
-            android:text="hello"
             android:maxLines="1"
             android:ellipsize="end"
             android:textColor="@android:color/white"
@@ -52,7 +51,6 @@
                 android:padding="15dp"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:text="496375"
                 android:textColor="@android:color/black"/>
 
             <LinearLayout
@@ -73,7 +71,6 @@
                     android:background="#e3f2fd"
                     android:maxLines="1"
                     android:ellipsize="end"
-                    android:text="wagon10g512m1t-ca"
                     android:textColor="@android:color/darker_gray"/>
 
                 <TextView
@@ -84,7 +81,6 @@
                     android:background="#e3f2fd"
                     android:maxLines="1"
                     android:ellipsize="end"
-                    android:text="im.sukaiyi@gmail.com"
                     android:textColor="@android:color/darker_gray"/>
             </LinearLayout>
 
@@ -97,7 +93,7 @@
             android:layout_height="wrap_content"
             android:background="#e3f2fd"
             android:foreground="?attr/selectableItemBackground"
-            android:text="更改主机名"
+            android:text="@string/str_change_host_name"
             android:paddingBottom="15dp"
             android:paddingTop="15dp"
             android:gravity="center"

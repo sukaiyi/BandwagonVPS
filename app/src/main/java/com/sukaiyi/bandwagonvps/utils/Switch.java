@@ -34,5 +34,4 @@ public class Switch {
         }
         return b2GB(b);
     }
-
 }

@@ -74,7 +74,7 @@ public class ChangeOSActivity extends AppCompatActivity implements SwipeRefreshL
 
         mOSAdapter = new OSAdapter(this, new ArrayList<String>(), R.layout.os_list_header);
         mOSAdapter.bindToRecyclerView(mOsListView);
-        mOSAdapter.setEmptyView(R.layout.os_list_empty);
+        mOSAdapter.setEmptyView(R.layout.list_empty);
         mOSAdapter.setOnItemClickListener(this);
 
         onRefresh();

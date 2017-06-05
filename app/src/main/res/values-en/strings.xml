@@ -17,4 +17,21 @@
     <string name="str_remain">Remain: </string>
     <string name="str_usage">Usage: </string>
     <string name="str_total">Total: </string>
+
+    <string name="str_create_snapshot">Create new snapshot</string>
+    <string name="str_import_snapshot">Import a snapshot</string>
+    <string name="str_snapshot_size">Snapshot size:</string>
+    <string name="str_snapshot_uncompressed_size">, Uncompressed size：</string>
+    <string name="str_md5">MD5:</string>
+    <string name="str_description">Description: </string>
+    <string name="str_available_snapshot">Available Snapshot</string>
+    <string name="str_start">Start</string>
+    <string name="str_stop">Stop</string>
+    <string name="str_restart">Restart</string>
+    <string name="str_force_stop">Force Stop</string>
+
+    <string name="str_change_host_name">Change Host Name</string>
+    <string name="str_ok">OK</string>
+    <string name="str_directory">Folder</string>
+    <string name="str_no_data_tips">There is no data, try to refresh.</string>
 </resources>

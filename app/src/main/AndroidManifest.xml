@@ -33,6 +33,10 @@
         </activity>
         <activity android:name=".TextFileActivity">
         </activity>
+        <activity
+            android:name=".SnapshotActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>
