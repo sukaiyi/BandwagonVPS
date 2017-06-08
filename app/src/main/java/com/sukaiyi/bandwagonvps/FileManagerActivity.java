@@ -82,10 +82,9 @@ public class FileManagerActivity extends AppCompatActivity implements BaseQuickA
 
 
         mPath = new Stack<>();
-        mPath.push("root");
         mFileListCache = new HashMap<>();
 
-        if(!getFileListFromCache()){
+        if (!getFileListFromCache()) {
             refreshFileList();
         }
     }
@@ -168,7 +167,7 @@ public class FileManagerActivity extends AppCompatActivity implements BaseQuickA
             super.onBackPressed();
         } else {
             mPath.pop();
-            if(!getFileListFromCache()){
+            if (!getFileListFromCache()) {
                 refreshFileList();
             }
         }

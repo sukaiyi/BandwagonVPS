@@ -34,4 +34,57 @@
     <string name="str_ok">OK</string>
     <string name="str_directory">Folder</string>
     <string name="str_no_data_tips">There is no data, try to refresh.</string>
+    <string name="str_download">Download</string>
+    <string name="str_delete">Delete</string>
+    <string name="str_restore">Restore</string>
+    <string name="str_export">Export</string>
+    <string name="str_modify">Modify</string>
+    <string name="str_dialog_ok">OK</string>
+    <string name="str_dialog_cancel">Cancel</string>
+    <string name="str_add_host">Add Host</string>
+    <string name="str_import_host">Import</string>
+    <string name="str_export_host">Export</string>
+    <string name="str_send_log">Send Crash Log</string>
+    <string name="str_no_log_file_tips">Log file not found</string>
+    <string name="str_choose_email_tips">Choose Email Client</string>
+    <string name="str_crash_report_tips">Bandwagon VPS Crash Report</string>
+    <string name="str_permission_request_tips">
+        Storage permissions are used:\n\n
+        1.Import/export host information.\n
+        2.Save crash log\n\n
+        If you want to use these features properly, please allow that permission.</string>
+    <string name="str_export_message">
+        This will export current hosts to file:\nsdcard/bandwagon_host_backup.json
+    </string>
+    <string name="str_import_message">
+        This will import hosts record in sdcard/bandwagon_host_backup.json.\n
+        Attention: host will be replaced directly if they has the same VEID.
+    </string>
+    <string name="str_send_log_message">
+        This will send an email containing the crash log to the developer. It is very helpful for debugging.
+    </string>
+    <string name="str_restore_message">This will overwrite all data on the VPS.\nAre you sure?</string>
+    <string name="str_delete_message">This will delete this snapshot</string>
+    <string name="str_snapshot_help">About snapshot</string>
+    <string name="str_snapshot_help_message">
+        A snapshot is a full copy of the VPS that can be created for backup purposes. \n\n
+        1. Snapshots can be used to restore the VPS to the exact same state as when the snapshot was taken (with all files and installed software in place).\n\n
+        2. Snapshots are stored for 30 days. After 30 days snapshots are automatically removed, so it is best to download them and keep a local copy.\n\n
+        3. Some snapshots can be set sticky. Sticky snapshots are never removed automatically. However, you can only have 2 sticky snapshots.\n\n
+        4. You can create a new snapshot by clicking the floating action menu below. \n
+        Please note that your VPS will be rebooted during the process; however, total downtime will be just a few seconds regardless of the number or size of files on your VPS.\n\n
+        5. You can import a snapshot from another VPS by clicking the floating action menu below. \n
+        This feature allows to "pull" an existing snapshot from another VPS and add it to the above list of available snapshots. The original snapshot will not be deleted.
+    </string>
+    <string name="str_purges_in">Expires in </string>
+    <string name="str_sticky">Sticky</string>
+    <string name="str_sticky_message">
+        Sticky snapshots are never removed automatically. However, you can only have 2 sticky snapshots.\n
+        This action will toogle sticky.
+    </string>
+    <string name="sticky_never_expires">Sticky, never expires</string>
+    <string name="str_token">Token</string>
+    <string name="str_token_copied">Token copied!</string>
+    <string name="str_create_snapshot_success_tips">Creating snapshot… We will send you an email once task is completed.</string>
+    <string name="str_import_snapshot_tips">Attention: Both VEID and Token must be obtained from another instance beforehand with a snapshot/export call.</string>
 </resources>

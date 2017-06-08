@@ -34,6 +34,52 @@
     <string name="str_ok">确认</string>
     <string name="str_directory">目录</string>
     <string name="str_no_data_tips">没有数据，试试下拉刷新</string>
-
-
+    <string name="str_download">下载</string>
+    <string name="str_delete">删除</string>
+    <string name="str_restore">恢复</string>
+    <string name="str_export">导出</string>
+    <string name="str_modify">修改</string>
+    <string name="str_dialog_ok">确认</string>
+    <string name="str_dialog_cancel">取消</string>
+    <string name="str_add_host">添加主机</string>
+    <string name="str_import_host">导入</string>
+    <string name="str_export_host">导出</string>
+    <string name="str_send_log">发送错误报告</string>
+    <string name="str_no_log_file_tips">没有发现LOG文件</string>
+    <string name="str_choose_email_tips">选择邮件客户端</string>
+    <string name="str_crash_report_tips">Bandwagon VPS 崩溃报告</string>
+    <string name="str_permission_request_tips">
+        存储权限用于：\n\n1.导入/导出主机的信息\n2.保存应用程序的崩溃日志\n\n若想要正常使用这些功能，请允许该权限
+    </string>
+    <string name="str_export_message">将导出当前的主机到sdcard根目录中的bandwagon_host_backup.json文件中</string>
+    <string name="str_import_message">将导入sdcard根目录的bandwagon_host_backup.json文件中的主机
+        注意：VEID相同的主机将直接被替换
+    </string>
+    <string name="str_send_log_message">
+        将以邮件得形式发送程序收集的崩溃日志，如果您在使用过程程序出现过崩溃现象，发送崩溃日志将会对开发者调试BUG有很大帮助
+    </string>
+    <string name="str_restore_message">这将会清除VPS上的所有数据，你确定吗？</string>
+    <string name="str_delete_message">将会删除这个快照</string>
+    <string name="str_snapshot_help">关于快照</string>
+    <string name="str_snapshot_help_message">
+        快照是VPS的一个完整副本，用于VPS的备份。请注意以下几点：\n\n
+        1. 快照可以将VPS恢复至创建快照的那个时候的状态（包括所有的文件和安装的软件）。\n\n
+        2. 快照只会保存30天，30天之后将会自动删除，所以最好将它下载到本地。\n\n
+        3. 某些快照可以设置成Sticky，Sticky的快照不会被自动删除，但是您最多可以设置两个快照为Sticky。\n\n
+        4. 您可以通过下面的浮动菜单创建一个快照。\n
+        请注意在创建快照的过程中您的VPS会重启一次，但是这只会耽误几秒钟的时间，无论您的VPS上有多少文件。\n\n
+        5. 您也可以通过下面的浮动菜单从另一个VPS上导入一个快照。\n
+        这个功能将从另一个VPS中拉取一个快照并将它加入到可用快照中，原本的快照并不会被删除。
+    </string>
+    <string name="str_purges_in">到期时间：</string>
+    <string name="str_sticky">Sticky</string>
+    <string name="str_sticky_message">
+        设置成Sticky的快照不会被自动删除，最多可以设置两个快照为Sticky;\n
+        如果该快照已经设置为Sticky, 那么次操作将取消该快照的Sticky属性。
+    </string>
+    <string name="sticky_never_expires">Sticky, 永久有效</string>
+    <string name="str_token">Token</string>
+    <string name="str_token_copied">Token已复制</string>
+    <string name="str_create_snapshot_success_tips">快照正在创建中，创建成功后将使用邮件通知您</string>
+    <string name="str_import_snapshot_tips">注意：Token必须来自于另一个实例导出。</string>
 </resources>

@@ -6,8 +6,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:foreground="?attr/selectableItemBackground"
+    app:cardCornerRadius="4dp"
     app:cardElevation="2dp"
-    app:cardPreventCornerOverlap="true">
+    app:cardMaxElevation="5dp"
+    app:cardPreventCornerOverlap="true"
+    app:cardUseCompatPadding="true">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -23,7 +26,6 @@
             android:text="Centos-6-x86"
             android:textColor="@android:color/black"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
@@ -101,6 +103,23 @@
             android:textColor="@android:color/black"
             app:layout_constraintLeft_toRightOf="@id/snapshot_md5_tips"
             app:layout_constraintTop_toBottomOf="@id/snapshot_size_tips"/>
+
+        <TextView
+            android:id="@+id/snapshot_purges_in_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_purges_in"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/snapshot_md5_tips"/>
+
+        <TextView
+            android:id="@+id/snapshot_purges_in"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="28天"
+            android:textColor="@android:color/black"
+            app:layout_constraintLeft_toRightOf="@id/snapshot_purges_in_tips"
+            app:layout_constraintTop_toBottomOf="@id/snapshot_md5_tips"/>
 
     </android.support.constraint.ConstraintLayout>
 

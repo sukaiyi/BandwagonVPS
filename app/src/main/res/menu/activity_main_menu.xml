@@ -3,8 +3,27 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:title="添加主机"
-          app:showAsAction="always"
-          android:id="@+id/menu_add_host"
-          android:icon="@drawable/ic_add_white_24dp"/>
+    <item
+        android:id="@+id/menu_add_host"
+        android:icon="@drawable/ic_add_white_24dp"
+        android:title="@string/str_add_host"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/menu_import_host"
+        android:icon="@drawable/ic_import_white_24dp"
+        android:title="@string/str_import_host"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/menu_export_host"
+        android:icon="@drawable/ic_export_white_24dp"
+        android:title="@string/str_export_host"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/menu_send_log"
+        android:icon="@drawable/ic_send_white_24dp"
+        android:title="@string/str_send_log"
+        app:showAsAction="never"/>
 </menu>

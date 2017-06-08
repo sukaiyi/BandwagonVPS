@@ -60,8 +60,8 @@
             android:id="@+id/action_button_create_snapshot"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_play_white_24dp"
-            app:fab_colorNormal="#81c784"
+            android:src="@drawable/ic_add_white_24dp"
+            app:fab_colorNormal="#ff8a65"
             app:fab_label="@string/str_create_snapshot"
             app:fab_size="mini"/>
 
@@ -69,8 +69,8 @@
             android:id="@+id/action_button_import_snapshot"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_power_settings_white_24dp"
-            app:fab_colorNormal="#ff8a65"
+            android:src="@drawable/ic_import_white_24dp"
+            app:fab_colorNormal="#80deea"
             app:fab_label="@string/str_import_snapshot"
             app:fab_size="mini"/>
 

@@ -1,9 +1,13 @@
 package com.sukaiyi.bandwagonvps;
 
+import android.Manifest;
 import android.app.ActivityOptions;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -24,6 +28,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.sukaiyi.bandwagonvps.adapter.HostListAdapter;
@@ -31,17 +36,26 @@ import com.sukaiyi.bandwagonvps.bean.ErrorMessage;
 import com.sukaiyi.bandwagonvps.bean.Host;
 import com.sukaiyi.bandwagonvps.bean.HostInfo;
 import com.sukaiyi.bandwagonvps.net.ApiGate;
+import com.sukaiyi.bandwagonvps.utils.CrashHandler;
 
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
+import pub.devrel.easypermissions.EasyPermissions;
 
 public class MainActivity extends AppCompatActivity implements BaseQuickAdapter.OnItemClickListener,
         SwipeRefreshLayout.OnRefreshListener,
@@ -61,19 +75,32 @@ public class MainActivity extends AppCompatActivity implements BaseQuickAdapter.
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setLogo(R.drawable.ic_vpn_white_24dp);
-
         ButterKnife.bind(this);
 
         mHostListView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         mHostListAdapter = new HostListAdapter(new ArrayList<Host>());
-        mHostListView.setAdapter(mHostListAdapter);
+        mHostListAdapter.bindToRecyclerView(mHostListView);
+        mHostListAdapter.setEmptyView(R.layout.list_empty);
 
         mHostListAdapter.setOnItemClickListener(this);
         mHostListAdapter.setOnItemLongClickListener(this);
 
         loadData();
-
         mSwipeRefreshLayout.setOnRefreshListener(this);
+
+        requestStoragePermissions();
+    }
+
+    private void requestStoragePermissions() {
+        String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
+        if (!EasyPermissions.hasPermissions(this, perms)) {
+            EasyPermissions.requestPermissions(this, getString(R.string.str_permission_request_tips), 100, perms);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     private void loadData() {
@@ -109,10 +136,10 @@ public class MainActivity extends AppCompatActivity implements BaseQuickAdapter.
 
     public void addNewHost() {
         new MaterialDialog.Builder(this)
-                .title("添加主机")
+                .title(getString(R.string.str_add_host))
                 .customView(R.layout.dialog_add_host, true)
-                .positiveText("确定")
-                .negativeText("取消")
+                .positiveText(getString(R.string.str_dialog_ok))
+                .negativeText(getString(R.string.str_dialog_cancel))
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
@@ -194,11 +221,101 @@ public class MainActivity extends AppCompatActivity implements BaseQuickAdapter.
             case R.id.menu_add_host:
                 addNewHost();
                 break;
+            case R.id.menu_import_host:
+                importHost();
+                break;
+            case R.id.menu_export_host:
+                exportHost();
+                break;
+            case R.id.menu_send_log:
+                new AlertDialog.Builder(this)
+                        .setTitle(getString(R.string.str_send_log))
+                        .setMessage(getString(R.string.str_send_log_message))
+                        .setPositiveButton(getString(R.string.str_dialog_ok), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                CrashHandler.getInstance().sendCrashLog(MainActivity.this);
+                            }
+                        })
+                        .show();
+                break;
             default:
                 break;
         }
-
         return super.onOptionsItemSelected(item);
+    }
+
+    private void exportHost() {
+        new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.str_export))
+                .setMessage(getString(R.string.str_export_message))
+                .setPositiveButton(getString(R.string.str_dialog_ok), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        boolean success = false;
+                        requestStoragePermissions();
+                        File file = Environment.getExternalStorageDirectory();
+                        String path = file.getAbsolutePath() + "/bandwagon_host_backup.json";
+                        BufferedWriter writer;
+                        try {
+                            writer = new BufferedWriter(new FileWriter(path));
+                            writer.write(new Gson().toJson(mHostListAdapter.getData()));
+                            writer.close();
+                            success = true;
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        if (success) {
+                            Snackbar.make(mHostListView, "导出成功：" + path, Snackbar.LENGTH_LONG).show();
+                        } else {
+                            Snackbar.make(mHostListView, "导出失败", Snackbar.LENGTH_LONG).show();
+                        }
+                    }
+                })
+                .setNegativeButton(getString(R.string.str_dialog_cancel), null)
+                .show();
+    }
+
+    private void importHost() {
+        new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.str_import_host))
+                .setMessage(getString(R.string.str_import_message))
+                .setPositiveButton(getString(R.string.str_dialog_ok), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        boolean success = false;
+                        requestStoragePermissions();
+                        File file = Environment.getExternalStorageDirectory();
+                        BufferedReader reader;
+                        StringBuilder sb = new StringBuilder();
+                        try {
+                            reader = new BufferedReader(new FileReader(file.getAbsolutePath() + "/bandwagon_host_backup.json"));
+                            String line;
+                            while ((line = reader.readLine()) != null) {
+                                sb.append(line).append("\n");
+                            }
+                            reader.close();
+                            List<Host> hosts = new Gson().fromJson(sb.toString(), new TypeToken<List<Host>>() {
+                            }.getType());
+                            for (Host h : hosts) {
+                                saveData(h);
+                            }
+                            loadData();
+                            success = true;
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        if (success) {
+                            Snackbar.make(mHostListView, "导入成功", Snackbar.LENGTH_LONG).show();
+                        } else {
+                            Snackbar.make(mHostListView, "导入失败", Snackbar.LENGTH_LONG).show();
+                        }
+                    }
+                })
+                .setNegativeButton(getString(R.string.str_dialog_cancel), null)
+                .show();
     }
 
     @Override
