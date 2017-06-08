@@ -29,7 +29,7 @@ public class HostInfo implements java.io.Serializable {
 
     private String ve_disk_quota_gb;
     private String ve_status;
-    private int ve_used_disk_space_b;
+    private long ve_used_disk_space_b;
     private String ve_mac1;
 
     public String getVe_disk_quota_gb() {
@@ -49,11 +49,11 @@ public class HostInfo implements java.io.Serializable {
     }
 
 
-    public int getVe_used_disk_space_b() {
+    public long getVe_used_disk_space_b() {
         return this.ve_used_disk_space_b;
     }
 
-    public void setVe_used_disk_space_b(int ve_used_disk_space_b) {
+    public void setVe_used_disk_space_b(long ve_used_disk_space_b) {
         this.ve_used_disk_space_b = ve_used_disk_space_b;
     }
 

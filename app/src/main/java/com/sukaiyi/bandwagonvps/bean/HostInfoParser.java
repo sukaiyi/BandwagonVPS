@@ -22,7 +22,7 @@ public class HostInfoParser {
         return this.mInfo.getVe_status();
     }
 
-    public int getVe_used_disk_space_b() {
+    public long getVe_used_disk_space_b() {
         return this.mInfo.getVe_used_disk_space_b();
     }
 
